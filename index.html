@@ -3,21 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#f59e0b">
+  <meta name="theme-color" content="#ea580c">
   <title>MUGEN LAB｜総合教育研究所 無限の可能性</title>
   <style>
     :root{
-      --orange:#f59e0b;
-      --orange2:#fb923c;
-      --yellow:#facc15;
-      --cream:#fffaf0;
-      --ink:#2d2418;
-      --muted:#766b5d;
+      --orange:#ea580c;
+      --orange-dark:#c2410c;
+      --orange-deep:#9a3412;
+      --orange-light:#fb923c;
+      --yellow:#fbbf24;
+      --cream:#fff7ed;
+      --ink:#3b1f0d;
+      --muted:#7c5036;
       --white:#ffffff;
-      --green:#22c55e;
-      --blue:#3b82f6;
-      --shadow:0 14px 34px rgba(80,50,10,.12);
+      --shadow:0 16px 36px rgba(120,55,10,.18);
     }
+
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
@@ -25,230 +26,248 @@
       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
       color:var(--ink);
       background:
-        radial-gradient(circle at 10% 0%, rgba(250,204,21,.28), transparent 28%),
-        linear-gradient(180deg,#fff8e8 0%,#fffdf8 42%,#fff8ee 100%);
+        radial-gradient(circle at top left, rgba(251,146,60,.35), transparent 30%),
+        radial-gradient(circle at top right, rgba(234,88,12,.20), transparent 28%),
+        linear-gradient(180deg, #fff1df 0%, #fff7ed 42%, #fff3e6 100%);
       min-height:100vh;
     }
-    a{color:inherit}
-    .wrap{width:min(980px,92%);margin:0 auto}
+    a{color:inherit;text-decoration:none}
+    .wrap{width:min(1000px,92%);margin:0 auto}
+
     header{
-      padding:36px 0 18px;
+      padding:42px 0 18px;
       text-align:center;
     }
+
     .brand{
       display:inline-flex;
       align-items:center;
       gap:10px;
-      padding:8px 14px;
+      padding:10px 16px;
       border-radius:999px;
       background:#fff;
-      box-shadow:0 8px 20px rgba(90,55,0,.08);
+      box-shadow:0 8px 18px rgba(154,52,18,.12);
       font-weight:800;
       font-size:14px;
+      color:var(--orange-deep);
+      border:1px solid rgba(234,88,12,.12);
     }
     .brand-dot{
       width:12px;height:12px;border-radius:50%;
-      background:linear-gradient(135deg,var(--yellow),var(--orange2));
-      box-shadow:0 0 0 4px rgba(245,158,11,.13);
+      background:linear-gradient(135deg,var(--yellow),var(--orange));
+      box-shadow:0 0 0 4px rgba(251,146,60,.18);
     }
+
     h1{
-      margin:20px 0 6px;
-      font-size:clamp(38px,8vw,72px);
-      letter-spacing:.02em;
+      margin:18px 0 8px;
+      font-size:clamp(38px,8vw,74px);
       line-height:1;
+      letter-spacing:.02em;
+      font-weight:900;
     }
+
     .lab{
-      background:linear-gradient(90deg,#f97316,#f59e0b,#eab308);
+      background:linear-gradient(90deg,var(--orange-deep),var(--orange),var(--yellow));
       -webkit-background-clip:text;
       background-clip:text;
       color:transparent;
     }
+
     .catch{
       margin:18px auto 0;
-      max-width:700px;
-      font-size:clamp(18px,3.4vw,25px);
-      font-weight:800;
+      max-width:760px;
+      font-size:clamp(19px,3.4vw,27px);
+      font-weight:900;
       line-height:1.65;
+      color:var(--orange-deep);
     }
+
     .sub{
       color:var(--muted);
       font-size:14px;
-      margin-top:10px;
-      line-height:1.7;
+      margin-top:12px;
+      line-height:1.8;
     }
 
     .hero{
-      margin:18px auto 30px;
+      margin:22px auto 34px;
       display:grid;
       grid-template-columns:1fr;
-      gap:18px;
+      gap:20px;
       align-items:center;
-      padding:22px;
-      border:1px solid rgba(245,158,11,.22);
-      border-radius:28px;
-      background:rgba(255,255,255,.78);
+      padding:24px;
+      border-radius:30px;
+      background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,247,237,.96));
+      border:1px solid rgba(234,88,12,.16);
       box-shadow:var(--shadow);
-      backdrop-filter:blur(8px);
     }
+
     .mascot{
       display:flex;
       justify-content:center;
     }
+
     .mascot-box{
-      position:relative;
-      width:min(210px,58vw);
+      width:min(280px,68vw);
       aspect-ratio:1/1;
-      border-radius:50%;
-      background:linear-gradient(145deg,#fff7d6,#ffe3a3);
+      border-radius:28px;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.8), transparent 40%),
+        linear-gradient(145deg,#ffedd5,#fed7aa);
       display:grid;
       place-items:center;
-      border:7px solid #fff;
-      box-shadow:0 10px 25px rgba(245,158,11,.16);
+      border:6px solid #fff;
+      box-shadow:0 12px 28px rgba(194,65,12,.18);
       overflow:hidden;
+      padding:10px;
     }
+
     .mascot-box img{
       width:100%;
       height:100%;
       object-fit:contain;
       display:block;
+      filter:drop-shadow(0 10px 18px rgba(0,0,0,.18));
     }
-    .fallback{
-      position:absolute;
-      inset:0;
-      display:grid;
-      place-items:center;
+
+    .hero-copy{
       text-align:center;
-      font-weight:900;
-      font-size:23px;
-      line-height:1.25;
-      padding:20px;
-      color:#9a5700;
-      z-index:-1;
     }
-    .hero-copy{text-align:center}
     .hero-copy strong{
       display:block;
-      font-size:clamp(22px,4.5vw,30px);
-      margin-bottom:8px;
+      font-size:clamp(22px,4.5vw,32px);
+      margin-bottom:10px;
+      color:var(--orange-deep);
     }
     .hero-copy p{
       margin:0;
-      line-height:1.8;
+      line-height:1.9;
       color:var(--muted);
+      font-size:15px;
     }
 
     .section-title{
-      font-size:22px;
-      margin:28px 2px 14px;
+      font-size:24px;
+      margin:30px 2px 14px;
       display:flex;
       align-items:center;
       gap:10px;
+      color:var(--orange-deep);
     }
     .section-title::before{
       content:"";
-      width:8px;height:28px;
-      border-radius:6px;
-      background:linear-gradient(var(--yellow),var(--orange2));
+      width:9px;height:30px;
+      border-radius:8px;
+      background:linear-gradient(var(--yellow),var(--orange));
     }
 
     .grid{
       display:grid;
       grid-template-columns:1fr;
-      gap:16px;
+      gap:18px;
     }
+
     .card{
       background:#fff;
       border-radius:24px;
-      padding:20px;
-      box-shadow:0 10px 24px rgba(80,50,10,.08);
-      border:1px solid rgba(80,50,10,.06);
+      padding:22px;
+      box-shadow:0 10px 24px rgba(80,50,10,.09);
+      border:1px solid rgba(234,88,12,.08);
       display:flex;
       flex-direction:column;
-      min-height:230px;
+      min-height:240px;
     }
+
     .icon{
-      width:52px;height:52px;
-      border-radius:17px;
+      width:56px;height:56px;
+      border-radius:18px;
       display:grid;
       place-items:center;
-      font-size:27px;
+      font-size:28px;
       margin-bottom:14px;
-      background:#fff3dc;
+      background:linear-gradient(145deg,#ffedd5,#fed7aa);
     }
+
     .card h2{
       margin:0;
-      font-size:22px;
+      font-size:23px;
+      color:var(--orange-deep);
     }
+
     .tag{
       display:inline-block;
       align-self:flex-start;
       margin-top:8px;
-      padding:5px 10px;
+      padding:6px 11px;
       border-radius:999px;
       font-size:12px;
-      font-weight:800;
-      background:#fff3dc;
-      color:#a35b00;
+      font-weight:900;
+      background:#fff0db;
+      color:#a54811;
     }
+
     .card p{
       color:var(--muted);
-      line-height:1.7;
+      line-height:1.8;
       font-size:14px;
-      margin:13px 0 18px;
+      margin:14px 0 18px;
       flex:1;
     }
+
     .btn{
-      text-decoration:none;
       display:flex;
       align-items:center;
       justify-content:center;
       gap:8px;
-      min-height:52px;
+      min-height:54px;
       padding:12px 16px;
       border-radius:16px;
       font-weight:900;
       color:#fff;
-      background:linear-gradient(135deg,#f97316,#f59e0b);
-      box-shadow:0 8px 16px rgba(249,115,22,.24);
+      background:linear-gradient(135deg,var(--orange-deep),var(--orange),var(--orange-light));
+      box-shadow:0 10px 18px rgba(234,88,12,.25);
       transition:.16s ease;
     }
     .btn:active{transform:scale(.98)}
-    .btn.blue{
-      background:linear-gradient(135deg,#2563eb,#3b82f6);
-      box-shadow:0 8px 16px rgba(37,99,235,.20);
+
+    .btn.secondary{
+      background:linear-gradient(135deg,#b45309,#ea580c,#f59e0b);
     }
+
     .soon{
       display:flex;
       align-items:center;
       justify-content:center;
-      min-height:52px;
+      min-height:54px;
       border-radius:16px;
-      border:2px dashed #ead7b8;
-      color:#9b8a70;
+      border:2px dashed #f2c6a1;
+      color:#9a6238;
       font-weight:800;
-      background:#fffaf2;
+      background:#fff7f0;
     }
+
     .note{
-      margin:24px 0 36px;
-      padding:18px;
-      border-radius:20px;
-      background:#fff7df;
-      line-height:1.8;
+      margin:26px 0 38px;
+      padding:20px;
+      border-radius:22px;
+      background:linear-gradient(180deg,#fff1e3,#ffedd5);
+      line-height:1.9;
       font-size:14px;
-      color:#6e5f49;
+      color:#7a4a2a;
+      border:1px solid rgba(234,88,12,.10);
     }
+
     footer{
       text-align:center;
-      padding:14px 0 42px;
-      color:#8b7d69;
+      padding:12px 0 42px;
+      color:#92694c;
       font-size:12px;
       line-height:1.8;
     }
 
-    @media (min-width:720px){
-      header{padding-top:50px}
+    @media (min-width:760px){
       .hero{
-        grid-template-columns:230px 1fr;
+        grid-template-columns:300px 1fr;
         padding:30px 34px;
       }
       .hero-copy{text-align:left}
@@ -268,14 +287,16 @@
     <section class="hero">
       <div class="mascot">
         <div class="mascot-box">
-          <img src="nankokun.png" alt="なんこうくん"
-               onerror="this.style.display='none';this.nextElementSibling.style.zIndex='1';">
-          <div class="fallback">なんこうくん<br><span style="font-size:14px">画像をここに入れられます</span></div>
+          <img src="nankokun.png" alt="なんこうくん">
         </div>
       </div>
       <div class="hero-copy">
         <strong>なんこうくんと一緒に、学びを楽しもう！</strong>
-        <p>できるところから一歩ずつ。わからない問題も、考えることから可能性がひろがります。</p>
+        <p>
+          できるところから一歩ずつ。<br>
+          わからない問題も、考えることから可能性がひろがります。<br>
+          MUGEN LAB は、無限の可能性の教材をひとつにまとめた学びの入口です。
+        </p>
       </div>
     </section>
 
@@ -297,7 +318,7 @@
         <h2>立方体の切断</h2>
         <span class="tag">数学・空間図形</span>
         <p>立方体を平面で切ったときの切り口を、フラッシュカード形式で確認できます。</p>
-        <a class="btn blue" href="https://kenzittc3333-eng.github.io/cube-cut/cube-cut.html" target="_blank" rel="noopener">
+        <a class="btn secondary" href="https://kenzittc3333-eng.github.io/cube-cut/cube-cut.html" target="_blank" rel="noopener">
           切断問題に挑戦 →
         </a>
       </article>
@@ -321,8 +342,8 @@
 
     <div class="note">
       <strong>MUGEN LABについて</strong><br>
-      「無限の可能性」の学習教材をひとつの入口にまとめた学びのページです。
-      教材そのものは今のページを残したまま使えるので、リンク切れや不具合を起こしにくい構成です。
+      「無限の可能性」の学習教材をひとつの入口にまとめたページです。<br>
+      英語教材や立方体の切断教材へ、ここからすぐに入ることができます。
     </div>
 
     <footer>
