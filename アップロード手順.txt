@@ -1,0 +1,13 @@
+MUGEN LAB 欠けていた3ページ修正版
+
+GitHub の mugen-lab に、次の3ファイルを追加してください。
+
+1. solid-guide.html   → 立体図鑑
+2. expressions.html   → 式の計算
+3. english.html       → 英語
+
+トップの index.html は変更しなくて大丈夫です。
+Add file → Upload files からこの3ファイルをアップロードし、
+Commit changes を押してください。
+
+英語ページ内の4教材は、既存の mugen-learning サイトへ直接リンクするよう修正済みです。
