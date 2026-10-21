@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>中学数学 関数の式と応用8問｜グラフx・y目盛り1対1｜チャッピー</title>
 <script>
 window.MathJax={
@@ -123,7 +123,42 @@ button:active{transform:scale(.97)}
   .tapnote{font-size:12px;left:14px;bottom:12px;max-width:170px}
 }
 </style>
-</head>
+
+<style id="mugen-function-mobile-fit">
+/* Size content against its card, including LINE's embedded browser. */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{min-width:0}
+.wrap,main,header,.head-inner,.title-center,.scene,.card,.face,#content,.math-wrap,
+.controls,.controls>*,.brand,.legend,.footer,.progress-wrap{min-width:0;max-width:100%}
+#content{width:100%}
+.card,.face{overflow:visible}
+#content>div,.face>div{min-width:0;max-width:100%;overflow-wrap:anywhere}
+.math-wrap{overflow:visible}
+.math-wrap .math{min-width:0;max-width:100%}
+mjx-container[jax="SVG"]{display:inline-block!important;min-width:0;max-width:100%;vertical-align:middle}
+body mjx-assistive-mml{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(1px,1px,1px,1px)!important;clip-path:inset(50%)!important}
+mjx-container[jax="SVG"]>svg{max-width:100%!important;height:auto!important}
+.graph-wrap{width:min(680px,100%)!important;max-width:100%!important}
+.graphBox{width:min(520px,100%)!important;max-width:100%!important}
+.graph-wrap canvas,.graphBox canvas{width:100%!important;height:auto!important;aspect-ratio:1/1!important;max-width:100%}
+.graphWrap{width:min(430px,100%)!important;max-width:100%;height:auto!important}
+.graphWrap canvas{width:100%!important;height:auto!important;aspect-ratio:430/250;max-width:100%}
+.functionGrade{white-space:normal!important;max-width:100%!important}
+.card .back:not(.face){width:100%;max-width:680px}
+.brand,.legend,.guide,.footer,.hint,.tapnote{overflow-wrap:anywhere}
+.controls{flex-wrap:wrap}
+.controls button,.controls select{min-width:0;max-width:100%;white-space:normal}
+@media(max-width:650px){
+ .wrap{padding:8px}
+ .card{padding-left:12px;padding-right:12px}.scene>.card{padding:0}
+ .face{padding-left:12px;padding-right:12px}
+ .back .work{padding-left:12px;padding-right:12px}
+}
+</style><style id="mugen-formula-auto-height">
+/* Both faces participate in layout so long answers can grow vertically. */
+.scene>.card{display:grid;grid-template-columns:minmax(0,1fr);height:auto}
+.scene>.card>.face{position:relative;inset:auto;grid-area:1/1;min-width:0;width:100%;align-self:stretch}
+</style><style>.tapnote{position:static;max-width:100%;margin-top:16px}</style></head>
 <body>
 <div class="wrap">
   <div class="brand">
@@ -304,5 +339,30 @@ card.addEventListener('touchend',e=>{
 },{passive:true});
 render();
 </script>
-</body>
+
+<script id="mugen-function-mobile-fit-script">
+(function(){
+ var queued=false;
+ function fit(){
+  queued=false;
+  // CSS handles MathJax SVG scaling; this also covers formulas before typesetting.
+  document.querySelectorAll('.math-wrap .math').forEach(function(el){
+   el.style.removeProperty('font-size');
+   if(el.querySelector('mjx-container'))return;
+   var width=el.parentElement.clientWidth;
+   if(width>0&&el.scrollWidth>width){
+    el.style.fontSize=Math.max(1,parseFloat(getComputedStyle(el).fontSize)*(width-4)/el.scrollWidth)+'px';
+   }
+  });
+ }
+ function queue(){if(!queued){queued=true;requestAnimationFrame(fit);}}
+ if(window.MutationObserver)new MutationObserver(queue).observe(document.body,{childList:true,subtree:true});
+ if(window.ResizeObserver)new ResizeObserver(queue).observe(document.querySelector('.wrap')||document.querySelector('main')||document.body);
+ window.addEventListener('resize',queue);
+ window.addEventListener('pageshow',queue);
+ if(window.visualViewport)window.visualViewport.addEventListener('resize',queue);
+ if(document.fonts)document.fonts.ready.then(queue);
+ queue();
+})();
+</script></body>
 </html>
