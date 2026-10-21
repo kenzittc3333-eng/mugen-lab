@@ -259,7 +259,13 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .app,.head,.head>div,.card{min-width:0}
 .head{grid-template-columns:105px minmax(0,1fr) 260px}
 .formulaOnly{width:100%;min-width:0;white-space:nowrap;gap:clamp(3px,1.2vw,12px);font-size:clamp(24px,10vw,110px);letter-spacing:0}
-.formulaOnly>span{flex:0 0 auto}
+.card{container-type:inline-size}
+.formulaOnly{display:grid;grid-template-columns:minmax(0,1.35fr) repeat(3,minmax(0,1fr)) minmax(0,1.35fr);gap:0;font-size:clamp(16px,10vw,100px);font-size:clamp(16px,17cqw,100px)}
+.formulaOnly>span{min-width:0;text-align:center;white-space:nowrap}
+.answerBlank{min-width:0}
+.formulaReveal{min-width:0;max-width:100%}
+.controls>*{max-width:100%}
+.head,.foot,.guide{overflow-wrap:anywhere}
 .formulaReveal .eq{white-space:nowrap;font-size:clamp(20px,6vw,70px)!important}
 .row{gap:8px;flex-wrap:wrap}
 .formulaHint,.praise{overflow-wrap:anywhere}
@@ -345,29 +351,37 @@ card.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx,dy=
 window.addEventListener('pagehide',stopVoice);
 render();
 
-// Fit each complete equation to its actual available width, including in-app browsers.
+// Measure rendered glyphs so browser text enlargement is also accounted for.
 function fitMathFormulas(){
  document.querySelectorAll('.formulaOnly,.formulaReveal .eq').forEach(el=>{
   if(!el.getClientRects().length)return;
   el.style.removeProperty('font-size');
-  const base=parseFloat(getComputedStyle(el).fontSize);
-  const available=el.clientWidth;
-  if(!available)return;
-  let needed;
-  if(el.classList.contains('formulaOnly')){
-   const parts=[...el.children];
-   needed=parts.reduce((sum,p)=>sum+p.getBoundingClientRect().width,0)+
-    Math.max(0,parts.length-1)*(parseFloat(getComputedStyle(el).columnGap)||0);
-  }else needed=el.scrollWidth;
-  if(needed>available-4)el.style.setProperty('font-size',
-   Math.max(1,base*(available-4)/needed)+'px','important');
+  const parts=el.classList.contains('formulaOnly')?[...el.children]:[el];
+  for(let pass=0;pass<5;pass++){
+   let ratio=1;
+   parts.forEach(part=>{
+    const range=document.createRange();range.selectNodeContents(part);
+    const needed=range.getBoundingClientRect().width;
+    const available=part.clientWidth-4;
+    if(needed>available&&needed>0)ratio=Math.min(ratio,Math.max(1,available)/needed);
+   });
+   if(ratio>=1)break;
+   el.style.setProperty('font-size',
+    Math.max(1,parseFloat(getComputedStyle(el).fontSize)*ratio*.98)+'px','important');
+  }
  });
 }
-new MutationObserver(()=>requestAnimationFrame(fitMathFormulas))
+let fitFrame=0;
+function queueFormulaFit(){
+ cancelAnimationFrame(fitFrame);
+ fitFrame=requestAnimationFrame(fitMathFormulas);
+}
+if(window.MutationObserver)new MutationObserver(queueFormulaFit)
  .observe(card,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
-new ResizeObserver(()=>requestAnimationFrame(fitMathFormulas)).observe(card);
-window.addEventListener('resize',fitMathFormulas);
-if(document.fonts)document.fonts.ready.then(fitMathFormulas);
-requestAnimationFrame(fitMathFormulas);
-
+if(window.ResizeObserver)new ResizeObserver(queueFormulaFit).observe(card);
+window.addEventListener('resize',queueFormulaFit);
+window.addEventListener('pageshow',queueFormulaFit);
+if(window.visualViewport)window.visualViewport.addEventListener('resize',queueFormulaFit);
+if(document.fonts)document.fonts.ready.then(queueFormulaFit);
+queueFormulaFit();
 </script></body></html>
