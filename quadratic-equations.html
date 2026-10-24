@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>二次方程式50問｜MUGEN学習LAB</title>
+<script>
+window.MathJax={
+ tex:{inlineMath:[['\\(','\\)']]},
+ svg:{fontCache:'global'},
+ options:{renderActions:{addMenu:[]}}
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 <style>
 :root{--orange:#f18a08;--dark:#783c0b;--light:#fff7e7;--line:#f4b862}
 *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;color:var(--dark);background:linear-gradient(160deg,#fffaf0,#fff1d3)}
@@ -68,7 +76,19 @@ function current(){return questions[order[pos]];}
 function speechText(s){return s.replace(/²/g,'の二乗').replace(/√/g,'ルート').replace(/±/g,'プラスマイナス').replace(/−/g,'マイナス').replace(/=/g,'イコール').replace(/\+/g,'プラス').replace(/\//g,'分の');}
 function say(){stopSpeech();if(!audioOk||!speechOn)return;const [q,a]=current(),t=new SpeechSynthesisUtterance(back?'解答、'+speechText(a):'問題、'+speechText(q));t.lang='ja-JP';t.rate=Number($('speed').value);const v=window.speechSynthesis.getVoices().find(v=>v.lang&&v.lang.startsWith('ja'));if(v)t.voice=v;window.speechSynthesis.speak(t);}
 function buildJump(){$('jump').innerHTML='';order.forEach((id,i)=>{const o=document.createElement('option');o.value=i;o.textContent='第'+(id+1)+'問';$('jump').appendChild(o);});}
-function showMath(element,expression){const nodes=[];for(const part of expression.split(/(x)/g)){if(!part)continue;if(part==='x'){const span=document.createElement('span');span.className='math-x';span.textContent='x';nodes.push(span);}else{nodes.push(document.createTextNode(part));}}element.replaceChildren(...nodes);}
+let mathRenderId=0;
+function toMathTex(expression){
+ return expression.replace(/−/g,'-').replace(/²/g,'^{2}').replace(/√(\d+)/g,(_,n)=>'\\sqrt{'+n+'}').replace(/±/g,'\\pm ');
+}
+function showMath(element,expression){
+ element.textContent=expression.replace(/x/g,'𝑥');
+ const id=++mathRenderId;
+ element.dataset.mathRenderId=String(id);
+ if(typeof window.MathJax?.tex2svgPromise!=='function')return;
+ window.MathJax.tex2svgPromise(toMathTex(expression),{display:false}).then(node=>{
+  if(element.dataset.mathRenderId===String(id))element.replaceChildren(node);
+ }).catch(()=>{/* 文字表示は残す */});
+}
 function render(){const [q,a]=current();showMath($('formula'),q);showMath($('solution'),a);$('solution').hidden=!back;$('side').textContent=back?'解答':'問題';$('counter').textContent=(pos+1)+' / '+questions.length;$('position').textContent=(pos+1)+' / '+questions.length;$('progress').style.width=((pos+1)*100/questions.length)+'%';$('jump').value=String(pos);$('hint').textContent=back?'前後のボタンで移動できます':'カードをタップすると解答が表示されます';$('card').setAttribute('aria-label',back?'タップで問題に戻る':'タップで解答を表示');say();}
 function flip(){back=!back;render();}
 function move(dx){pos=(pos+dx+order.length)%order.length;back=false;render();}
@@ -86,4 +106,11 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden)stopSpeech(
 document.addEventListener('keydown',e=>{if(['SELECT','BUTTON'].includes(document.activeElement?.tagName))return;if(e.key==='ArrowRight')move(1);if(e.key==='ArrowLeft')move(-1);});
 if(!audioOk){$('voiceToggle').disabled=true;$('replay').disabled=true;}
 buildJump();render();
+window.addEventListener('load',()=>{
+ if(window.MathJax?.startup?.promise){
+  window.MathJax.startup.promise.then(()=>{
+   const [q,a]=current();showMath($('formula'),q);showMath($('solution'),a);
+  }).catch(()=>{});
+ }
+});
 </script></body></html>
