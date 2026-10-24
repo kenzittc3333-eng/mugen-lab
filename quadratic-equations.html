@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>二次方程式50問｜MUGEN学習LAB</title>
+<style>
+:root{--orange:#f18a08;--dark:#783c0b;--light:#fff7e7;--line:#f4b862}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;color:var(--dark);background:linear-gradient(160deg,#fffaf0,#fff1d3)}
+main{width:min(100%,980px);margin:auto;padding:14px 12px 40px}
+header{background:linear-gradient(130deg,#ffb944,#fa8904);border:3px solid #ffd38f;border-radius:26px;padding:13px 10px 20px;color:white;text-align:center;box-shadow:0 7px 0 #d97800}
+.school{font-size:clamp(14px,3.3vw,23px);font-weight:900;background:linear-gradient(90deg,#e33b61,#f4cd12,#2aae78,#397ee7,#bd52d8);background-clip:text;-webkit-background-clip:text;color:transparent;white-space:nowrap;line-height:1.5}
+.head-row{display:grid;grid-template-columns:clamp(50px,16vw,116px) 1fr clamp(50px,16vw,116px);align-items:center;gap:5px}
+.head-row img{width:100%;max-height:140px;object-fit:contain;filter:drop-shadow(1px 3px 3px #a3602340)}
+h1{font-size:clamp(27px,7.1vw,54px);margin:2px 0 5px;white-space:nowrap;letter-spacing:.01em;text-shadow:0 2px #b66b22}
+.sub{font-size:clamp(13px,3.7vw,21px);font-weight:850;line-height:1.5}
+.back{display:inline-flex;align-items:center;gap:5px;text-decoration:none;color:#9b4a00;font-weight:850;padding:10px 2px}
+.surface{background:#fff;border:2px solid var(--line);border-radius:24px;padding:14px 12px;margin-top:15px;box-shadow:0 7px 0 #f4dab0}
+.settings{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;margin-bottom:13px}
+button,select{font:inherit;font-weight:850;border-radius:12px;min-height:44px;padding:9px 12px;touch-action:manipulation}
+button{border:2px solid var(--orange);background:var(--orange);color:#fff;cursor:pointer}
+button.alt{background:#fff;color:#a85100}
+button:focus-visible,select:focus-visible{outline:3px solid #1858cb;outline-offset:2px}
+select{border:2px solid var(--line);background:#fff;color:var(--dark);max-width:100%}
+.audiobar{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px;padding:9px 6px;margin-bottom:12px;background:#fff5e3;border-radius:16px}
+.audiobar label{font-weight:850;font-size:14px}
+#voiceToggle[aria-pressed=true]{background:#238a4d;border-color:#238a4d}
+.card{min-height:370px;border:3px solid #f4ac39;background:#fffdf7;border-radius:24px;display:flex;flex-direction:column;padding:18px 12px 15px;text-align:center;cursor:pointer;user-select:none;box-shadow:0 5px 0 #f9e2be}
+.cardbar{display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:850;color:#b65d08}
+.cardbar .tag{border:2px solid #f4c07c;border-radius:99px;padding:7px 12px}
+.face{display:flex;flex:1;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:22px 4px}
+#formula{font-family:"Times New Roman","Hiragino Mincho ProN",serif;font-size:clamp(29px,7.7vw,64px);font-weight:750;color:#5b2b07;line-height:1.5;overflow-wrap:anywhere}
+#solution{font-family:"Times New Roman","Hiragino Mincho ProN",serif;font-size:clamp(30px,7vw,58px);font-weight:780;color:#0f4891;line-height:1.5;overflow-wrap:anywhere}
+.hint{font-size:13px;font-weight:800;color:#b46616}
+.nav{display:flex;justify-content:center;gap:12px;margin-top:16px}
+.nav button{flex:1;max-width:270px;font-size:19px;min-height:52px}
+#position{font-weight:900;font-size:18px;text-align:center;margin:15px 0 7px}
+.track{height:10px;border-radius:99px;overflow:hidden;background:#fce7c5}
+#progress{height:100%;width:2%;background:linear-gradient(90deg,#f28a0a,#fbd03d)}
+footer{text-align:center;color:#754b28;font-weight:800;font-size:13px;line-height:1.7;padding:17px 4px}
+@media(max-width:440px){main{padding:9px 8px 28px}.surface{padding:10px 8px}.card{min-height:345px;padding:13px 9px}.nav{gap:8px}.nav button{font-size:16px}.settings{gap:6px}button,select{font-size:14px;padding:8px 9px}.school{font-size:clamp(12px,3.25vw,17px)}}
+</style></head><body><main>
+<header><div class="school">総合教育研究所　無限の可能性</div><div class="head-row"><img src="hyakumasu-nankou.png" alt="なんこうくん"><div><h1>二次方程式</h1><div class="sub">1問1答・50問フラッシュカード</div></div><img src="chappy.png" alt="むげんチャッピー"></div></header>
+<a class="back" href="equation-menu.html">← 方程式の入口へ戻る</a>
+<section class="surface">
+<div class="settings">
+<label for="jump">問題</label><select id="jump" aria-label="問題番号を選択"></select>
+<button type="button" class="alt" id="shuffle">シャッフル</button><button type="button" class="alt" id="flipTop">表／裏</button>
+</div>
+<div class="audiobar">
+<button type="button" id="voiceToggle" aria-pressed="false">🔇 音声 OFF</button><label for="speed">速さ</label>
+<select id="speed" aria-label="読み上げ速度"><option value="0.8">ゆっくり</option><option value="1" selected>ふつう</option><option value="1.25">はやい</option></select>
+<button type="button" class="alt" id="replay">🔁 もう一度聞く</button>
+</div>
+<div class="card" id="card" role="button" tabindex="0" aria-label="タップで解答を表示">
+<div class="cardbar"><span id="counter">1 / 50</span><span class="tag" id="side">問題</span></div>
+<div class="face"><div id="formula"></div><div id="solution" hidden></div></div>
+<div class="hint" id="hint">カードをタップすると解答が表示されます</div></div>
+<nav class="nav" aria-label="カードの移動"><button class="alt" type="button" id="prev">◀ 戻る</button><button type="button" id="flip">表／裏</button><button class="alt" type="button" id="next">進む ▶</button></nav>
+<div id="position">1 / 50</div><div class="track"><div id="progress"></div></div>
+</section><footer>自分で考え、自分で学び、自分で伸びる。<br>MUGEN学習LAB｜総合教育研究所 無限の可能性</footer></main>
+<script>
+"use strict";
+const questions=[["x² = 9","x = ±3"],["x² = 81","x = ±9"],["x² − 25 = 0","x = ±5"],["x² = 27","x = ±3√3"],["x² − 8 = 0","x = ±2√2"],["3x² − 5 = 0","x = ±√15 / 3"],["4x² − 3 = 0","x = ±√3 / 2"],["(x − 2)² = 3","x = 2 ± √3"],["(x + 1)² = 5","x = −1 ± √5"],["(x − 3)² = 16","x = 7, −1"],["(x + 6)² = 27","x = −6 ± 3√3"],["x(x + 1) = 0","x = 0, −1"],["x(x − 5) = 0","x = 0, 5"],["(x + 7)² = 0","x = −7"],["(x + 5)(x − 2) = 0","x = −5, 2"],["(x − 1)(x − 3) = 0","x = 1, 3"],["(2x + 1)(x − 6) = 0","x = −1/2, 6"],["(3x − 5)(2x + 5) = 0","x = 5/3, −5/2"],["x² + 5x + 6 = 0","x = −2, −3"],["x² − 6x + 9 = 0","x = 3"],["x² − x − 12 = 0","x = 4, −3"],["x² − 2x − 24 = 0","x = 6, −4"],["x² − 6x = 0","x = 0, 6"],["3(x − 2)² = 18","x = 2 ± √6"],["x² = 49","x = ±7"],["x² = 64","x = ±8"],["x² − 36 = 0","x = ±6"],["x² = 12","x = ±2√3"],["x² − 18 = 0","x = ±3√2"],["5x² − 20 = 0","x = ±2"],["2x² − 7 = 0","x = ±√14 / 2"],["(x − 4)² = 9","x = 7, 1"],["(x + 2)² = 7","x = −2 ± √7"],["(x − 5)² = 20","x = 5 ± 2√5"],["(x + 3)² = 12","x = −3 ± 2√3"],["x(x − 4) = 0","x = 0, 4"],["(x − 8)² = 0","x = 8"],["(x − 7)(x + 1) = 0","x = 7, −1"],["(x + 4)(x + 2) = 0","x = −4, −2"],["(3x + 2)(x − 5) = 0","x = −2/3, 5"],["(4x − 3)(x + 2) = 0","x = 3/4, −2"],["x² + 7x + 12 = 0","x = −3, −4"],["x² − 8x + 16 = 0","x = 4"],["x² + x − 20 = 0","x = 4, −5"],["x² − 3x − 28 = 0","x = 7, −4"],["x² + 2x = 0","x = 0, −2"],["2(x − 1)² = 8","x = 3, −1"],["4(x + 2)² = 36","x = 1, −5"],["6x² − 24 = 0","x = ±2"],["x² − 10x + 25 = 0","x = 5"]];
+const $=id=>document.getElementById(id);
+let order=Array.from({length:questions.length},(_,i)=>i),pos=0,back=false,speechOn=false;
+const audioOk=('speechSynthesis' in window)&&('SpeechSynthesisUtterance' in window);
+function stopSpeech(){if(audioOk)window.speechSynthesis.cancel();}
+function current(){return questions[order[pos]];}
+function speechText(s){return s.replace(/²/g,'の二乗').replace(/√/g,'ルート').replace(/±/g,'プラスマイナス').replace(/−/g,'マイナス').replace(/=/g,'イコール').replace(/\+/g,'プラス').replace(/\//g,'分の');}
+function say(){stopSpeech();if(!audioOk||!speechOn)return;const [q,a]=current(),t=new SpeechSynthesisUtterance(back?'解答、'+speechText(a):'問題、'+speechText(q));t.lang='ja-JP';t.rate=Number($('speed').value);const v=window.speechSynthesis.getVoices().find(v=>v.lang&&v.lang.startsWith('ja'));if(v)t.voice=v;window.speechSynthesis.speak(t);}
+function buildJump(){$('jump').innerHTML='';order.forEach((id,i)=>{const o=document.createElement('option');o.value=i;o.textContent='第'+(id+1)+'問';$('jump').appendChild(o);});}
+function render(){const [q,a]=current();$('formula').textContent=q;$('solution').textContent=a;$('solution').hidden=!back;$('side').textContent=back?'解答':'問題';$('counter').textContent=(pos+1)+' / '+questions.length;$('position').textContent=(pos+1)+' / '+questions.length;$('progress').style.width=((pos+1)*100/questions.length)+'%';$('jump').value=String(pos);$('hint').textContent=back?'前後のボタンで移動できます':'カードをタップすると解答が表示されます';$('card').setAttribute('aria-label',back?'タップで問題に戻る':'タップで解答を表示');say();}
+function flip(){back=!back;render();}
+function move(dx){pos=(pos+dx+order.length)%order.length;back=false;render();}
+function shuffle(){for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}pos=0;back=false;buildJump();render();}
+$('card').addEventListener('click',flip);
+$('card').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flip();}});
+$('flip').addEventListener('click',flip);$('flipTop').addEventListener('click',flip);
+$('prev').addEventListener('click',()=>move(-1));$('next').addEventListener('click',()=>move(1));
+$('jump').addEventListener('change',e=>{pos=Number(e.target.value);back=false;render();});
+$('shuffle').addEventListener('click',shuffle);
+$('voiceToggle').addEventListener('click',()=>{if(!audioOk)return;speechOn=!speechOn;$('voiceToggle').setAttribute('aria-pressed',String(speechOn));$('voiceToggle').textContent=speechOn?'🔊 音声 ON':'🔇 音声 OFF';if(speechOn)say();else stopSpeech();});
+$('replay').addEventListener('click',()=>{if(!audioOk)return;speechOn=true;$('voiceToggle').setAttribute('aria-pressed','true');$('voiceToggle').textContent='🔊 音声 ON';say();});
+$('speed').addEventListener('change',()=>{if(speechOn)say();});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stopSpeech();});
+document.addEventListener('keydown',e=>{if(['SELECT','BUTTON'].includes(document.activeElement?.tagName))return;if(e.key==='ArrowRight')move(1);if(e.key==='ArrowLeft')move(-1);});
+if(!audioOk){$('voiceToggle').disabled=true;$('replay').disabled=true;}
+buildJump();render();
+</script></body></html>
