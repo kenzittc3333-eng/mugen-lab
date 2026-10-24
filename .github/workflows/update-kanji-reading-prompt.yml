@@ -1,0 +1,41 @@
+name: Update kanji flashcard instruction
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/update-kanji-reading-prompt.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  update-text:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Change only the kanji reading instruction
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          target = Path("kanji-reading100.html")
+          text = target.read_text(encoding="utf-8")
+          old = "この漢字の読みを、ひらがなで答えよう"
+          new = "この漢字、何と読む？ 声に出して答えよう！"
+          if text.count(old) != 1:
+              raise SystemExit(f"Expected 1 exact match; found {text.count(old)}")
+          target.write_text(text.replace(old, new), encoding="utf-8")
+          print("Updated exactly one kanji prompt.")
+          PY
+      - name: Commit the updated wording
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add kanji-reading100.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Use spoken-answer instruction on kanji reading cards"
+          git push origin HEAD:main
