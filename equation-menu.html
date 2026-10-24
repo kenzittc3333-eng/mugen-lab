@@ -17,18 +17,29 @@ h1{font-size:clamp(37px,9vw,65px);line-height:1.15;white-space:nowrap;margin:10p
 .card{background:#fff;border:3px solid #f1b15a;border-radius:24px;padding:19px 14px 23px;text-decoration:none;color:var(--dark);display:flex;align-items:center;flex-direction:column;box-shadow:0 8px 0 #f5d5a5;min-height:300px}
 .card:focus-visible{outline:3px solid #166be4;outline-offset:5px}
 .mark{background:#fff2d5;color:#c06b07;padding:7px 12px;border-radius:99px;font-size:14px;font-weight:850}
-.illustration{font-size:70px;margin:20px 0 8px;line-height:1;display:flex;align-items:baseline;justify-content:center;min-height:73px}.math-x{font-family:'Cambria Math','Times New Roman',serif;font-style:italic;font-weight:400;line-height:1}.math-power{font-family:'Times New Roman',serif;font-weight:500;font-size:.48em;line-height:1;vertical-align:super;margin-left:2px}
+.illustration{font-size:70px;margin:20px 0 8px;line-height:1;display:flex;align-items:baseline;justify-content:center;min-height:73px}.math-example{font-family:'Cambria Math','STIX Two Math','Times New Roman',serif;font-weight:400;font-style:normal;line-height:1;display:inline-flex;align-items:baseline;justify-content:center}.math-example sup{font-size:.45em;line-height:0;position:relative;top:-.55em;margin-left:1px}.math-example mjx-container{margin:0!important}
 .name{font-size:clamp(26px,5.2vw,38px);font-weight:950;text-align:center;white-space:nowrap}
 .description{text-align:center;font-weight:750;font-size:clamp(14px,3vw,18px);line-height:1.6;margin-top:12px;flex:1}
 .go{background:linear-gradient(#ff9d24,#ea7600);color:#fff;padding:10px 18px;border-radius:99px;font-weight:900;margin-top:20px}
 .note{text-align:center;margin-top:24px;font-size:14px;font-weight:750;line-height:1.7}
 @media(max-width:550px){.grid{grid-template-columns:1fr}.card{min-height:240px}.illustration{font-size:56px;margin:15px 0 7px}.school{font-size:clamp(12px,3.1vw,18px)}.hero{gap:3px}.name{font-size:30px}}
-</style></head><body><main>
+</style><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script></head><body><main>
 <header><div class="school">総合教育研究所　無限の可能性</div><div class="hero"><img src="hyakumasu-nankou.png" alt="なんこうくん"><div><h1>方程式</h1><div class="subtitle">MUGEN学習LAB｜フラッシュカード</div></div><img src="chappy.png" alt="むげんチャッピー"></div></header>
 <a class="back" href="index.html">← MUGEN学習LAB トップページへ</a>
 <p class="intro">学びたい方程式を選んでください</p>
 <div class="grid">
-<a class="card" href="equations.html"><span class="mark">これまでの教材</span><div class="illustration" aria-hidden="true"><span class="math-x">x</span></div><div class="name">一次方程式</div><div class="description">従来の方程式フラッシュカードを<br>そのまま使えます</div><div class="go">学習する →</div></a>
-<a class="card" href="quadratic-equations.html"><span class="mark">今回追加・50問</span><div class="illustration" aria-hidden="true"><span class="math-x">x</span><sup class="math-power">2</sup></div><div class="name">二次方程式</div><div class="description">プリントをもとに作成した50問<br>音声・速度切替・前後移動つき</div><div class="go">学習する →</div></a>
+<a class="card" href="equations.html"><span class="mark">これまでの教材</span><div class="illustration" aria-hidden="true"><span class="math-example" data-math="x" aria-label="筆記体のx">𝑥</span></div><div class="name">一次方程式</div><div class="description">従来の方程式フラッシュカードを<br>そのまま使えます</div><div class="go">学習する →</div></a>
+<a class="card" href="quadratic-equations.html"><span class="mark">今回追加・50問</span><div class="illustration" aria-hidden="true"><span class="math-example" data-math="x^{2}" aria-label="筆記体のxの二乗">𝑥<sup>2</sup></span></div><div class="name">二次方程式</div><div class="description">プリントをもとに作成した50問<br>音声・速度切替・前後移動つき</div><div class="go">学習する →</div></a>
 </div><div class="note">なんこうくん・むげんチャッピーと一緒に、毎日一問ずつ！</div>
-</main></body></html>
+</main><script>
+// フラッシュカードと同じMathJaxの数学字体で、xとx²を表示します。
+window.addEventListener('load',()=>{
+ const math=window.MathJax;
+ if(!math?.tex2svgPromise)return;
+ Promise.resolve(math.startup?.promise).then(()=>{
+  document.querySelectorAll('[data-math]').forEach(el=>{
+   math.tex2svgPromise(el.dataset.math,{display:false}).then(node=>el.replaceChildren(node)).catch(()=>{});
+  });
+ }).catch(()=>{});
+});
+</script></body></html>
