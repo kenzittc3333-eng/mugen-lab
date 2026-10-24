@@ -30,13 +30,19 @@ select{border:2px solid var(--line);background:#fff;color:var(--dark);max-width:
 .audiobar{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px;padding:9px 6px;margin-bottom:12px;background:#fff5e3;border-radius:16px}
 .audiobar label{font-weight:850;font-size:14px}
 #voiceToggle[aria-pressed=true]{background:#238a4d;border-color:#238a4d}
-.card{touch-action:pan-y;min-height:370px;border:3px solid #f4ac39;background:#fffdf7;border-radius:24px;display:flex;flex-direction:column;padding:18px 12px 15px;text-align:center;cursor:pointer;user-select:none;box-shadow:0 5px 0 #f9e2be}
+.card{overflow:hidden;touch-action:pan-y;min-height:370px;border:3px solid #f4ac39;background:#fffdf7;border-radius:24px;display:flex;flex-direction:column;padding:18px 12px 15px;text-align:center;cursor:pointer;user-select:none;box-shadow:0 5px 0 #f9e2be}
 .cardbar{display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:850;color:#b65d08}
 .cardbar .tag{border:2px solid #f4c07c;border-radius:99px;padding:7px 12px}
-.face{display:flex;flex:1;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:22px 4px}
-#formula{font-family:"Times New Roman","Hiragino Mincho ProN",serif;font-size:clamp(29px,7.7vw,64px);font-weight:750;color:#5b2b07;line-height:1.5;overflow-wrap:anywhere}
-#solution{font-family:"Times New Roman","Hiragino Mincho ProN",serif;font-size:clamp(30px,7vw,58px);font-weight:780;color:#0f4891;line-height:1.5;overflow-wrap:anywhere}
+.face{display:flex;flex:1;flex-direction:column;align-items:center;justify-content:center;gap:11px;padding:18px 2px;min-width:0;width:100%}
+#formula{font-family:"Times New Roman","Hiragino Mincho ProN",serif;font-size:clamp(28px,7.2vw,59px);font-weight:750;color:#5b2b07;line-height:1.5;width:100%;min-width:0;text-align:center;white-space:nowrap;overflow:hidden}
+#solution{font-family:"Times New Roman","Hiragino Mincho ProN",serif;font-size:clamp(29px,6.9vw,54px);font-weight:780;color:#0f4891;line-height:1.45;width:100%;min-width:0;text-align:center;white-space:nowrap;overflow:hidden}
 .math-x{font-family:"Cambria Math","Times New Roman",serif;font-style:italic;font-weight:400}
+#working{width:100%;min-width:0}
+#factored{width:100%;min-width:0;font-family:"Times New Roman","Hiragino Mincho ProN",serif;font-size:clamp(25px,6.4vw,48px);font-weight:750;line-height:1.4;color:#ba6609;text-align:center;white-space:nowrap;overflow:hidden}
+.step-label{font-size:clamp(13px,3.4vw,17px);line-height:1.3;color:#ad6415;font-weight:900;margin-bottom:3px}
+#answerHeading{margin-bottom:-7px}
+#formula mjx-container,#solution mjx-container,#factored mjx-container{display:inline-block!important;max-width:none!important;margin:0!important;white-space:nowrap}
+[hidden]{display:none!important}
 .hint{font-size:13px;font-weight:800;color:#b46616}
 .nav{display:flex;justify-content:center;gap:12px;margin-top:16px}
 .nav button{flex:1;max-width:270px;font-size:19px;min-height:52px}
@@ -60,7 +66,7 @@ footer{text-align:center;color:#754b28;font-weight:800;font-size:13px;line-heigh
 </div>
 <div class="card" id="card" role="button" tabindex="0" aria-label="タップで解答を表示">
 <div class="cardbar"><span id="counter">1 / 50</span><span class="tag" id="side">問題</span></div>
-<div class="face"><div id="formula"></div><div id="solution" hidden></div></div>
+<div class="face"><div id="formula"></div><div id="working" hidden><div class="step-label">① 因数分解すると</div><div id="factored"></div></div><div id="answerHeading" class="step-label" hidden>② 解</div><div id="solution" hidden></div></div>
 <div class="hint" id="hint">タップ：解答　｜　左スワイプ：次へ　｜　右スワイプ：前へ</div></div>
 <nav class="nav" aria-label="カードの移動"><button class="alt" type="button" id="prev">◀ 戻る</button><button type="button" id="flip">表／裏</button><button class="alt" type="button" id="next">進む ▶</button></nav>
 <div id="position">1 / 50</div><div class="track"><div id="progress"></div></div>
@@ -68,6 +74,34 @@ footer{text-align:center;color:#754b28;font-weight:800;font-size:13px;line-heigh
 <script>
 "use strict";
 const questions=[["x² = 9","x = ±3"],["x² = 81","x = ±9"],["x² − 25 = 0","x = ±5"],["x² = 27","x = ±3√3"],["x² − 8 = 0","x = ±2√2"],["3x² − 5 = 0","x = ±√15 / 3"],["4x² − 3 = 0","x = ±√3 / 2"],["(x − 2)² = 3","x = 2 ± √3"],["(x + 1)² = 5","x = −1 ± √5"],["(x − 3)² = 16","x = 7, −1"],["(x + 6)² = 27","x = −6 ± 3√3"],["x(x + 1) = 0","x = 0, −1"],["x(x − 5) = 0","x = 0, 5"],["(x + 7)² = 0","x = −7"],["(x + 5)(x − 2) = 0","x = −5, 2"],["(x − 1)(x − 3) = 0","x = 1, 3"],["(2x + 1)(x − 6) = 0","x = −1/2, 6"],["(3x − 5)(2x + 5) = 0","x = 5/3, −5/2"],["x² + 5x + 6 = 0","x = −2, −3"],["x² − 6x + 9 = 0","x = 3"],["x² − x − 12 = 0","x = 4, −3"],["x² − 2x − 24 = 0","x = 6, −4"],["x² − 6x = 0","x = 0, 6"],["3(x − 2)² = 18","x = 2 ± √6"],["x² = 49","x = ±7"],["x² = 64","x = ±8"],["x² − 36 = 0","x = ±6"],["x² = 12","x = ±2√3"],["x² − 18 = 0","x = ±3√2"],["5x² − 20 = 0","x = ±2"],["2x² − 7 = 0","x = ±√14 / 2"],["(x − 4)² = 9","x = 7, 1"],["(x + 2)² = 7","x = −2 ± √7"],["(x − 5)² = 20","x = 5 ± 2√5"],["(x + 3)² = 12","x = −3 ± 2√3"],["x(x − 4) = 0","x = 0, 4"],["(x − 8)² = 0","x = 8"],["(x − 7)(x + 1) = 0","x = 7, −1"],["(x + 4)(x + 2) = 0","x = −4, −2"],["(3x + 2)(x − 5) = 0","x = −2/3, 5"],["(4x − 3)(x + 2) = 0","x = 3/4, −2"],["x² + 7x + 12 = 0","x = −3, −4"],["x² − 8x + 16 = 0","x = 4"],["x² + x − 20 = 0","x = 4, −5"],["x² − 3x − 28 = 0","x = 7, −4"],["x² + 2x = 0","x = 0, −2"],["2(x − 1)² = 8","x = 3, −1"],["4(x + 2)² = 36","x = 1, −5"],["6x² − 24 = 0","x = ±2"],["x² − 10x + 25 = 0","x = 5"]];
+// Factorizations for quadratic equations that can be factored over rational numbers.
+// Already-factored problems retain their factorized question above the answer.
+const factors={
+  1:"(x - 3)(x + 3) = 0",
+  2:"(x - 9)(x + 9) = 0",
+  3:"(x - 5)(x + 5) = 0",
+  10:"(x - 7)(x + 1) = 0",
+  19:"(x + 2)(x + 3) = 0",
+  20:"(x - 3)² = 0",
+  21:"(x - 4)(x + 3) = 0",
+  22:"(x - 6)(x + 4) = 0",
+  23:"x(x - 6) = 0",
+  25:"(x - 7)(x + 7) = 0",
+  26:"(x - 8)(x + 8) = 0",
+  27:"(x - 6)(x + 6) = 0",
+  30:"5(x - 2)(x + 2) = 0",
+  32:"(x - 7)(x - 1) = 0",
+  42:"(x + 3)(x + 4) = 0",
+  43:"(x - 4)² = 0",
+  44:"(x - 4)(x + 5) = 0",
+  45:"(x - 7)(x + 4) = 0",
+  46:"x(x + 2) = 0",
+  47:"2(x - 3)(x + 1) = 0",
+  48:"4(x - 1)(x + 5) = 0",
+  49:"6(x - 2)(x + 2) = 0",
+  50:"(x - 5)² = 0"
+};
+
 const $=id=>document.getElementById(id);
 let order=Array.from({length:questions.length},(_,i)=>i),pos=0,back=false,speechOn=false;
 const audioOk=('speechSynthesis' in window)&&('SpeechSynthesisUtterance' in window);
@@ -81,7 +115,7 @@ function speechText(s){
  });
  return fractionFixed.replace(/²/g,'の二乗').replace(/√/g,'ルート').replace(/±/g,'プラスマイナス').replace(/−/g,'マイナス').replace(/=/g,'イコール').replace(/\+/g,'プラス');
 }
-function say(){stopSpeech();if(!audioOk||!speechOn)return;const [q,a]=current(),t=new SpeechSynthesisUtterance(back?'解答、'+speechText(a):'問題、'+speechText(q));t.lang='ja-JP';t.rate=Number($('speed').value);const v=window.speechSynthesis.getVoices().find(v=>v.lang&&v.lang.startsWith('ja'));if(v)t.voice=v;window.speechSynthesis.speak(t);}
+function say(){stopSpeech();if(!audioOk||!speechOn)return;const [q,a]=current();const step=back&&factors[order[pos]+1]?'因数分解すると、'+speechText(factors[order[pos]+1])+'。':'';const t=new SpeechSynthesisUtterance(back?'解答。'+step+'解は、'+speechText(a):'問題、'+speechText(q));t.lang='ja-JP';t.rate=Number($('speed').value);const v=window.speechSynthesis.getVoices().find(v=>v.lang&&v.lang.startsWith('ja'));if(v)t.voice=v;window.speechSynthesis.speak(t);}
 function buildJump(){$('jump').innerHTML='';order.forEach((id,i)=>{const o=document.createElement('option');o.value=i;o.textContent='第'+(id+1)+'問';$('jump').appendChild(o);});}
 let mathRenderId=0;
 function toMathTex(expression){
@@ -92,16 +126,55 @@ function toMathTex(expression){
   .replace(/(\\sqrt\{\d+\}|\d+)\s*\/\s*(\d+)/g,(_,num,den)=>'\\frac{'+num+'}{'+den+'}')
   .replace(/±/g,'\\pm ');
 }
+function fitMath(element){
+ if(element.hidden||element.closest('[hidden]'))return;
+ // Set the widest permitted size first, then shrink the rendered equation to the
+ // actual inner width of the card. This also handles long parenthesized formulas.
+ element.style.fontSize='';
+ const maxWidth=element.clientWidth-6;
+ if(maxWidth<=0)return;
+ for(let attempt=0;attempt<4;attempt++){
+  const inner=element.querySelector('mjx-container')||element.firstElementChild;
+  const actual=inner?inner.getBoundingClientRect().width:element.scrollWidth;
+  if(!actual||actual<=maxWidth-1)break;
+  const size=parseFloat(getComputedStyle(element).fontSize);
+  element.style.fontSize=Math.max(13,Math.floor(size*maxWidth/actual)-1)+'px';
+ }
+}
 function showMath(element,expression){
  element.textContent=expression.replace(/x/g,'𝑥');
+ element.style.fontSize='';
  const id=++mathRenderId;
  element.dataset.mathRenderId=String(id);
- if(typeof window.MathJax?.tex2svgPromise!=='function')return;
+ if(typeof window.MathJax?.tex2svgPromise!=='function'){
+  requestAnimationFrame(()=>{if(element.dataset.mathRenderId===String(id))fitMath(element);});
+  return;
+ }
  window.MathJax.tex2svgPromise(toMathTex(expression),{display:false}).then(node=>{
-  if(element.dataset.mathRenderId===String(id))element.replaceChildren(node);
+  if(element.dataset.mathRenderId===String(id)){
+   element.replaceChildren(node);
+   requestAnimationFrame(()=>{if(element.dataset.mathRenderId===String(id))fitMath(element);});
+  }
  }).catch(()=>{/* 文字表示は残す */});
 }
-function render(){const [q,a]=current();showMath($('formula'),q);showMath($('solution'),a);$('solution').hidden=!back;$('side').textContent=back?'解答':'問題';$('counter').textContent=(pos+1)+' / '+questions.length;$('position').textContent=(pos+1)+' / '+questions.length;$('progress').style.width=((pos+1)*100/questions.length)+'%';$('jump').value=String(pos);$('hint').textContent=back?'左スワイプ：次へ　｜　右スワイプ：前へ':'タップ：解答　｜　左スワイプ：次へ　｜　右スワイプ：前へ';$('card').setAttribute('aria-label',back?'タップで問題に戻る':'タップで解答を表示');say();}
+function render(){
+ const [q,a]=current(),factor=factors[order[pos]+1];
+ $('working').hidden=!(back&&factor);
+ $('answerHeading').hidden=!(back&&factor);
+ $('solution').hidden=!back;
+ $('side').textContent=back?'解答':'問題';
+ $('counter').textContent=(pos+1)+' / '+questions.length;
+ $('position').textContent=(pos+1)+' / '+questions.length;
+ $('progress').style.width=((pos+1)*100/questions.length)+'%';
+ $('jump').value=String(pos);
+ $('hint').textContent=back&&factor?'① 因数分解した式 → ② 解　｜　左右スワイプで移動':back?'左スワイプ：次へ　｜　右スワイプ：前へ':'タップ：解答　｜　左スワイプ：次へ　｜　右スワイプ：前へ';
+ $('card').setAttribute('aria-label',back?'タップで問題に戻る':'タップで解答を表示');
+ showMath($('formula'),q);
+ if(back&&factor)showMath($('factored'),factor);
+ showMath($('solution'),a);
+ requestAnimationFrame(()=>{fitMath($('formula'));if(back){fitMath($('solution'));if(factor)fitMath($('factored'));}});
+ say();
+}
 function flip(){back=!back;render();}
 function move(dx){pos=(pos+dx+order.length)%order.length;back=false;render();}
 function shuffle(){for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}pos=0;back=false;buildJump();render();}
@@ -130,13 +203,14 @@ $('voiceToggle').addEventListener('click',()=>{if(!audioOk)return;speechOn=!spee
 $('replay').addEventListener('click',()=>{if(!audioOk)return;speechOn=true;$('voiceToggle').setAttribute('aria-pressed','true');$('voiceToggle').textContent='🔊 音声 ON';say();});
 $('speed').addEventListener('change',()=>{if(speechOn)say();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stopSpeech();});
+window.addEventListener('resize',()=>{requestAnimationFrame(()=>{fitMath($('formula'));if(back){fitMath($('solution'));if(!$('working').hidden)fitMath($('factored'));}});});
 document.addEventListener('keydown',e=>{if(['SELECT','BUTTON'].includes(document.activeElement?.tagName))return;if(e.key==='ArrowRight')move(1);if(e.key==='ArrowLeft')move(-1);});
 if(!audioOk){$('voiceToggle').disabled=true;$('replay').disabled=true;}
 buildJump();render();
 window.addEventListener('load',()=>{
  if(window.MathJax?.startup?.promise){
   window.MathJax.startup.promise.then(()=>{
-   const [q,a]=current();showMath($('formula'),q);showMath($('solution'),a);
+   const [q,a]=current();showMath($('formula'),q);showMath($('solution'),a);if(back&&factors[order[pos]+1])showMath($('factored'),factors[order[pos]+1]);
   }).catch(()=>{});
  }
 });
