@@ -30,7 +30,7 @@ select{border:2px solid var(--line);background:#fff;color:var(--dark);max-width:
 .audiobar{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px;padding:9px 6px;margin-bottom:12px;background:#fff5e3;border-radius:16px}
 .audiobar label{font-weight:850;font-size:14px}
 #voiceToggle[aria-pressed=true]{background:#238a4d;border-color:#238a4d}
-.card{min-height:370px;border:3px solid #f4ac39;background:#fffdf7;border-radius:24px;display:flex;flex-direction:column;padding:18px 12px 15px;text-align:center;cursor:pointer;user-select:none;box-shadow:0 5px 0 #f9e2be}
+.card{touch-action:pan-y;min-height:370px;border:3px solid #f4ac39;background:#fffdf7;border-radius:24px;display:flex;flex-direction:column;padding:18px 12px 15px;text-align:center;cursor:pointer;user-select:none;box-shadow:0 5px 0 #f9e2be}
 .cardbar{display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:850;color:#b65d08}
 .cardbar .tag{border:2px solid #f4c07c;border-radius:99px;padding:7px 12px}
 .face{display:flex;flex:1;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:22px 4px}
@@ -61,7 +61,7 @@ footer{text-align:center;color:#754b28;font-weight:800;font-size:13px;line-heigh
 <div class="card" id="card" role="button" tabindex="0" aria-label="タップで解答を表示">
 <div class="cardbar"><span id="counter">1 / 50</span><span class="tag" id="side">問題</span></div>
 <div class="face"><div id="formula"></div><div id="solution" hidden></div></div>
-<div class="hint" id="hint">カードをタップすると解答が表示されます</div></div>
+<div class="hint" id="hint">タップ：解答　｜　左スワイプ：次へ　｜　右スワイプ：前へ</div></div>
 <nav class="nav" aria-label="カードの移動"><button class="alt" type="button" id="prev">◀ 戻る</button><button type="button" id="flip">表／裏</button><button class="alt" type="button" id="next">進む ▶</button></nav>
 <div id="position">1 / 50</div><div class="track"><div id="progress"></div></div>
 </section><footer>自分で考え、自分で学び、自分で伸びる。<br>MUGEN学習LAB｜総合教育研究所 無限の可能性</footer></main>
@@ -89,11 +89,26 @@ function showMath(element,expression){
   if(element.dataset.mathRenderId===String(id))element.replaceChildren(node);
  }).catch(()=>{/* 文字表示は残す */});
 }
-function render(){const [q,a]=current();showMath($('formula'),q);showMath($('solution'),a);$('solution').hidden=!back;$('side').textContent=back?'解答':'問題';$('counter').textContent=(pos+1)+' / '+questions.length;$('position').textContent=(pos+1)+' / '+questions.length;$('progress').style.width=((pos+1)*100/questions.length)+'%';$('jump').value=String(pos);$('hint').textContent=back?'前後のボタンで移動できます':'カードをタップすると解答が表示されます';$('card').setAttribute('aria-label',back?'タップで問題に戻る':'タップで解答を表示');say();}
+function render(){const [q,a]=current();showMath($('formula'),q);showMath($('solution'),a);$('solution').hidden=!back;$('side').textContent=back?'解答':'問題';$('counter').textContent=(pos+1)+' / '+questions.length;$('position').textContent=(pos+1)+' / '+questions.length;$('progress').style.width=((pos+1)*100/questions.length)+'%';$('jump').value=String(pos);$('hint').textContent=back?'左スワイプ：次へ　｜　右スワイプ：前へ':'タップ：解答　｜　左スワイプ：次へ　｜　右スワイプ：前へ';$('card').setAttribute('aria-label',back?'タップで問題に戻る':'タップで解答を表示');say();}
 function flip(){back=!back;render();}
 function move(dx){pos=(pos+dx+order.length)%order.length;back=false;render();}
 function shuffle(){for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}pos=0;back=false;buildJump();render();}
-$('card').addEventListener('click',flip);
+let touchStart=null,suppressTapUntil=0;
+$('card').addEventListener('touchstart',e=>{
+ if(e.touches.length!==1){touchStart=null;return;}
+ touchStart={x:e.touches[0].clientX,y:e.touches[0].clientY};
+},{passive:true});
+$('card').addEventListener('touchend',e=>{
+ if(!touchStart||e.changedTouches.length!==1){touchStart=null;return;}
+ const dx=e.changedTouches[0].clientX-touchStart.x;
+ const dy=e.changedTouches[0].clientY-touchStart.y;
+ touchStart=null;
+ if(Math.abs(dx)<45||Math.abs(dx)<Math.abs(dy)*1.3)return;
+ suppressTapUntil=Date.now()+600;
+ move(dx<0?1:-1);
+},{passive:true});
+$('card').addEventListener('touchcancel',()=>{touchStart=null;},{passive:true});
+$('card').addEventListener('click',()=>{if(Date.now()<suppressTapUntil)return;flip();});
 $('card').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flip();}});
 $('flip').addEventListener('click',flip);$('flipTop').addEventListener('click',flip);
 $('prev').addEventListener('click',()=>move(-1));$('next').addEventListener('click',()=>move(1));
