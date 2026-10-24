@@ -222,6 +222,21 @@ header{
 .answer .ans-positive,.original .ans-positive{color:#000!important}
 .answer .ans-negative,.original .ans-negative{color:#d40000!important}
 .answer .ans-zero,.original .ans-zero{color:#000!important}
+/* 問題・解答の両画面に前後移動ボタンを配置 */
+.card-navigation,.answer-navigation{
+  display:flex;justify-content:center;gap:14px;
+  margin:18px auto 8px;width:100%;max-width:620px;
+}
+.nav-btn{flex:1;max-width:250px;min-height:54px;border:2px solid #ea580c;
+  border-radius:14px;background:#fff;color:#9a3412;font-size:20px;font-weight:900;
+  touch-action:manipulation}
+.nav-next{background:#ea580c;color:#fff}
+.nav-btn:focus-visible{outline:3px solid #2563eb;outline-offset:3px}
+@media(max-width:650px){
+  .card-navigation,.answer-navigation{gap:10px;margin:14px auto 8px}
+  .nav-btn{font-size:17px;min-height:52px;padding:10px 8px}
+  .answerbox{padding:20px 14px}
+}
 </style>
 
 </head>
@@ -241,7 +256,10 @@ header{
   <div class="expr" id="expr"></div>
   <div class="hint">タッチすると答えが表示されます</div>
 </div>
-
+<nav class="card-navigation" aria-label="問題を移動">
+  <button class="nav-btn nav-prev" type="button" onclick="previousProblem(event)">◀ 戻る</button>
+  <button class="nav-btn nav-next" type="button" onclick="nextProblem(event)">進む ▶</button>
+</nav>
 
 <div class="bottom-mascot-wrap" aria-label="なんこうくん">
   <img class="bottom-mascot" src="positive-negative-500-nankou.png" alt="なんこうくん">
@@ -256,6 +274,10 @@ header{
     <div class="answer" id="answer"></div>
     <div class="original" id="original"></div>
     <div class="guide">もう一度タッチすると次の問題へ進みます</div>
+    <nav class="answer-navigation" aria-label="解答から問題を移動">
+      <button class="nav-btn nav-prev" type="button" onclick="previousProblem(event)">◀ 戻る</button>
+      <button class="nav-btn nav-next" type="button" onclick="nextProblem(event)">進む ▶</button>
+    </nav>
   </div>
 </div>
 
@@ -310,11 +332,18 @@ function showAnswer(){
   sound();
 }
 
-function nextProblem(e){
-  e.stopPropagation();
+function moveProblem(step,e){
+  if(e) e.stopPropagation();
   document.getElementById("overlay").classList.remove("show");
-  index=(index+1)%100;
+  const total=modes[currentMode].problems.length;
+  index=(index+step+total)%total;
   render();
+}
+function previousProblem(e){
+  moveProblem(-1,e);
+}
+function nextProblem(e){
+  moveProblem(1,e);
 }
 
 function shuffleCurrent(){
