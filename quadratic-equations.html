@@ -73,12 +73,24 @@ let order=Array.from({length:questions.length},(_,i)=>i),pos=0,back=false,speech
 const audioOk=('speechSynthesis' in window)&&('SpeechSynthesisUtterance' in window);
 function stopSpeech(){if(audioOk)window.speechSynthesis.cancel();}
 function current(){return questions[order[pos]];}
-function speechText(s){return s.replace(/²/g,'の二乗').replace(/√/g,'ルート').replace(/±/g,'プラスマイナス').replace(/−/g,'マイナス').replace(/=/g,'イコール').replace(/\+/g,'プラス').replace(/\//g,'分の');}
+function speechText(s){
+ // 「ルート15/3」は「3分のルート15」と読み上げる
+ const fractionFixed=s.replace(/([±−-]?)(√\d+|\d+)\s*\/\s*(\d+)/g,(_,sign,numer,denom)=>{
+  const prefix=sign==='±'?'プラスマイナス ':sign==='−'||sign==='-'?'マイナス ':'';
+  return prefix+denom+'分の'+numer.replace('√','ルート');
+ });
+ return fractionFixed.replace(/²/g,'の二乗').replace(/√/g,'ルート').replace(/±/g,'プラスマイナス').replace(/−/g,'マイナス').replace(/=/g,'イコール').replace(/\+/g,'プラス');
+}
 function say(){stopSpeech();if(!audioOk||!speechOn)return;const [q,a]=current(),t=new SpeechSynthesisUtterance(back?'解答、'+speechText(a):'問題、'+speechText(q));t.lang='ja-JP';t.rate=Number($('speed').value);const v=window.speechSynthesis.getVoices().find(v=>v.lang&&v.lang.startsWith('ja'));if(v)t.voice=v;window.speechSynthesis.speak(t);}
 function buildJump(){$('jump').innerHTML='';order.forEach((id,i)=>{const o=document.createElement('option');o.value=i;o.textContent='第'+(id+1)+'問';$('jump').appendChild(o);});}
 let mathRenderId=0;
 function toMathTex(expression){
- return expression.replace(/−/g,'-').replace(/²/g,'^{2}').replace(/√(\d+)/g,(_,n)=>'\\sqrt{'+n+'}').replace(/±/g,'\\pm ');
+ // 斜線で書かれたすべての分数を上下に積む LaTeX 分数へ変換
+ // 「√15/3」→ \frac{\sqrt{15}}{3}, 「-1/2」→ -\frac{1}{2}
+ return expression.replace(/−/g,'-').replace(/²/g,'^{2}')
+  .replace(/√(\d+)/g,(_,n)=>'\\sqrt{'+n+'}')
+  .replace(/(\\sqrt\{\d+\}|\d+)\s*\/\s*(\d+)/g,(_,num,den)=>'\\frac{'+num+'}{'+den+'}')
+  .replace(/±/g,'\\pm ');
 }
 function showMath(element,expression){
  element.textContent=expression.replace(/x/g,'𝑥');
