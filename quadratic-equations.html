@@ -28,6 +28,7 @@ select{border:2px solid var(--line);background:#fff;color:var(--dark);max-width:
 .face{display:flex;flex:1;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:22px 4px}
 #formula{font-family:"Times New Roman","Hiragino Mincho ProN",serif;font-size:clamp(29px,7.7vw,64px);font-weight:750;color:#5b2b07;line-height:1.5;overflow-wrap:anywhere}
 #solution{font-family:"Times New Roman","Hiragino Mincho ProN",serif;font-size:clamp(30px,7vw,58px);font-weight:780;color:#0f4891;line-height:1.5;overflow-wrap:anywhere}
+.math-x{font-family:"Cambria Math","Times New Roman",serif;font-style:italic;font-weight:400}
 .hint{font-size:13px;font-weight:800;color:#b46616}
 .nav{display:flex;justify-content:center;gap:12px;margin-top:16px}
 .nav button{flex:1;max-width:270px;font-size:19px;min-height:52px}
@@ -67,7 +68,8 @@ function current(){return questions[order[pos]];}
 function speechText(s){return s.replace(/²/g,'の二乗').replace(/√/g,'ルート').replace(/±/g,'プラスマイナス').replace(/−/g,'マイナス').replace(/=/g,'イコール').replace(/\+/g,'プラス').replace(/\//g,'分の');}
 function say(){stopSpeech();if(!audioOk||!speechOn)return;const [q,a]=current(),t=new SpeechSynthesisUtterance(back?'解答、'+speechText(a):'問題、'+speechText(q));t.lang='ja-JP';t.rate=Number($('speed').value);const v=window.speechSynthesis.getVoices().find(v=>v.lang&&v.lang.startsWith('ja'));if(v)t.voice=v;window.speechSynthesis.speak(t);}
 function buildJump(){$('jump').innerHTML='';order.forEach((id,i)=>{const o=document.createElement('option');o.value=i;o.textContent='第'+(id+1)+'問';$('jump').appendChild(o);});}
-function render(){const [q,a]=current();$('formula').textContent=q;$('solution').textContent=a;$('solution').hidden=!back;$('side').textContent=back?'解答':'問題';$('counter').textContent=(pos+1)+' / '+questions.length;$('position').textContent=(pos+1)+' / '+questions.length;$('progress').style.width=((pos+1)*100/questions.length)+'%';$('jump').value=String(pos);$('hint').textContent=back?'前後のボタンで移動できます':'カードをタップすると解答が表示されます';$('card').setAttribute('aria-label',back?'タップで問題に戻る':'タップで解答を表示');say();}
+function showMath(element,expression){const nodes=[];for(const part of expression.split(/(x)/g)){if(!part)continue;if(part==='x'){const span=document.createElement('span');span.className='math-x';span.textContent='x';nodes.push(span);}else{nodes.push(document.createTextNode(part));}}element.replaceChildren(...nodes);}
+function render(){const [q,a]=current();showMath($('formula'),q);showMath($('solution'),a);$('solution').hidden=!back;$('side').textContent=back?'解答':'問題';$('counter').textContent=(pos+1)+' / '+questions.length;$('position').textContent=(pos+1)+' / '+questions.length;$('progress').style.width=((pos+1)*100/questions.length)+'%';$('jump').value=String(pos);$('hint').textContent=back?'前後のボタンで移動できます':'カードをタップすると解答が表示されます';$('card').setAttribute('aria-label',back?'タップで問題に戻る':'タップで解答を表示');say();}
 function flip(){back=!back;render();}
 function move(dx){pos=(pos+dx+order.length)%order.length;back=false;render();}
 function shuffle(){for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}pos=0;back=false;buildJump();render();}
