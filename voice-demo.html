@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f28a0b"><title>なんこうくん＆むげんチャッピー 声のお試しラボ</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(165deg,#fff9ee,#ffedcc);color:#793e0c;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif}
+main{max-width:930px;padding:12px 13px 35px;margin:auto}
+a{color:#a55000;font-weight:850;text-decoration:none}
+.back{display:inline-block;margin:8px 0 15px}
+header{text-align:center;border:3px solid #ffd597;border-radius:28px;background:linear-gradient(130deg,#ffc254,#f28a0b);color:white;padding:20px 10px;box-shadow:0 8px 0 #d67b00}
+.brand{font-size:clamp(15px,3.5vw,25px);font-weight:950;white-space:nowrap}
+.brand span{background:linear-gradient(90deg,#df2c52,#ffe560,#52c567,#519fee,#b35ddc);background-clip:text;-webkit-background-clip:text;color:transparent}
+h1{font-size:clamp(26px,5.5vw,47px);margin:9px 0;line-height:1.3;text-shadow:0 2px #b36c1c}
+header p{font-size:clamp(14px,3.2vw,20px);font-weight:800;line-height:1.7}
+.mascots{display:flex;justify-content:center;align-items:flex-end;gap:15px}
+.mascots img{width:clamp(80px,19vw,145px);height:150px;object-fit:contain;filter:drop-shadow(1px 5px 7px #8d440a70)}
+.panel{margin-top:20px;border:2px solid #efb15a;border-radius:24px;padding:16px;background:white;box-shadow:0 7px 0 #f0d1a0}
+.notice{background:#fff4dd;border-radius:15px;padding:11px 13px;font-size:14px;font-weight:750;line-height:1.8}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:17px 0}
+.person{border:2px solid #edb56c;border-radius:22px;padding:15px;background:#fffcf7}
+.person.girl{border-color:#eda8c4;background:#fff9fd}
+h2{font-size:clamp(20px,3.6vw,29px);margin:5px 0;text-align:center}
+.description{text-align:center;font-weight:800;margin:5px 0 12px}
+label{font-size:14px;font-weight:900;display:block;margin:11px 0 6px}
+textarea,select{width:100%;background:white;color:#733e12;border:2px solid #eab771;border-radius:11px;padding:10px;font:inherit;font-size:15px}
+textarea{height:106px;line-height:1.6;resize:vertical}
+.twosliders{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.twosliders label{font-size:13px}
+output{color:#b56500}
+input[type=range]{width:100%;accent-color:#f28a0b;min-height:30px}
+button{font:inherit;font-weight:900;font-size:16px;padding:12px 14px;min-height:49px;cursor:pointer;border:2px solid #e87c00;border-radius:14px;background:#f18a09;color:white;touch-action:manipulation}
+button.alt{background:white;color:#9b4b00}
+button:disabled{opacity:.52;cursor:not-allowed}
+button:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #176bdd;outline-offset:2px}
+.play{margin-top:12px;width:100%}
+.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+#status{margin-top:15px;background:#fff3df;border-radius:14px;padding:12px;font-size:14px;font-weight:800;line-height:1.8}
+footer{text-align:center;font-weight:700;font-size:13px;line-height:1.8;margin-top:22px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.person{padding:12px}.panel{padding:11px}.actions button{flex:1}}
+</style></head><body>
+<main><a class="back" href="index.html">← MUGEN学習LABに戻る</a>
+<header><div class="brand"><span>総合教育研究所　無限の可能性</span></div>
+<h1>🎙️ なんこうくん＆<br>むげんチャッピー 声のお試しラボ</h1>
+<p>ふたりの自己紹介を聞いてみよう！<br>声の高さ・速さ・セリフを調整できるよ</p>
+<div class="mascots"><img alt="なんこうくん" src="hyakumasu-nankou.png"><img alt="むげんチャッピー" src="chappy.png"></div></header>
+<section class="panel">
+<div class="notice">🌱 このページは<strong>スマホ・ブラウザ内蔵の日本語読み上げ音声を使った試作版</strong>です。専用に制作したオリジナル音声ではありません。音声の種類や声の印象は端末によって異なります。</div>
+<div class="grid">
+<section class="person">
+<h2>🌟 なんこうくん</h2><p class="description">元気で明るい男の子の声</p>
+<label for="boyText">セリフ</label><textarea id="boyText" maxlength="250">みんな、こんにちは！ぼく、なんこうくん！島本から世界へ！いっしょに楽しく学ぼうね！</textarea>
+<label for="boyVoice">声の種類</label><select id="boyVoice"><option value="-1">日本語の声を探しています…</option></select>
+<div class="twosliders"><div><label for="boyPitch">高さ <output id="boyPitchValue">1.15</output></label><input type="range" id="boyPitch" min="0.8" max="1.8" step="0.05" value="1.15"></div><div><label for="boyRate">速さ <output id="boyRateValue">1.00</output></label><input type="range" id="boyRate" min="0.7" max="1.4" step="0.05" value="1.00"></div></div>
+<button type="button" id="boyPlay" class="play">▶ なんこうくんの声を聴く</button>
+</section>
+<section class="person girl">
+<h2>🌸 むげんチャッピー</h2><p class="description">やさしく弾む、可愛い妹の声</p>
+<label for="girlText">セリフ</label><textarea id="girlText" maxlength="250">こんにちは〜！なんこうくんの妹、むげんチャッピーだよ！できた！の笑顔を、いっしょに増やそうね！</textarea>
+<label for="girlVoice">声の種類</label><select id="girlVoice"><option value="-1">日本語の声を探しています…</option></select>
+<div class="twosliders"><div><label for="girlPitch">高さ <output id="girlPitchValue">1.40</output></label><input type="range" id="girlPitch" min="0.8" max="1.8" step="0.05" value="1.40"></div><div><label for="girlRate">速さ <output id="girlRateValue">1.10</output></label><input type="range" id="girlRate" min="0.7" max="1.4" step="0.05" value="1.10"></div></div>
+<button type="button" id="girlPlay" class="play">▶ むげんチャッピーの声を聴く</button>
+</section></div>
+<div class="actions"><button id="bothPlay">🎵 ふたりで自己紹介</button><button id="stopPlay" class="alt">■ 停止</button><button id="reset" class="alt">↺ 高さ・速さを元に戻す</button></div>
+<div id="status" role="status" aria-live="polite">日本語音声を準備しています。再生ボタンを押してね！</div>
+</section>
+<footer>声のお試しページ：MUGEN学習LAB<br>本格的なオリジナル声優音声や音声ファイルの制作とは異なります。音が出ない場合はGoogle Chromeで開いてください。</footer>
+</main><script>
+(function(){
+"use strict";
+const byId=id=>document.getElementById(id);
+const supported="speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+const engine=supported?window.speechSynthesis:null;
+let voices=[],playVersion=0;
+const ids=["boy","girl"];
+function info(t){byId("status").textContent=t;}
+function stop(){playVersion+=1;if(engine)engine.cancel();}
+function loadVoices(){
+ if(!engine)return;
+ voices=engine.getVoices().filter(v=>/^ja(?:-|_)/i.test(v.lang));
+ for(const [i,id] of ids.entries()){
+  const select=byId(id+"Voice"),previous=select.selectedOptions[0]&&select.selectedOptions[0].dataset.name;
+  select.replaceChildren();
+  const auto=document.createElement("option");auto.value="-1";auto.textContent="日本語の声を自動選択";select.appendChild(auto);
+  voices.forEach((v,j)=>{const opt=document.createElement("option");opt.value=String(j);opt.dataset.name=v.name;opt.textContent=v.name+(v.localService?"（端末内）":"");select.appendChild(opt);});
+  const prev=voices.findIndex(v=>v.name===previous);
+  select.value=String(prev>=0?prev:(i===0&&voices.length?0:(i===1&&voices.length>1?1:-1)));
+ }
+ info(voices.length?"日本語音声が"+voices.length+"種類見つかりました。聞き比べてね！":"日本語の声を探しています。見つからなくても自動音声で試せることがあります。");
+}
+function utteranceFor(id){
+ const t=byId(id+"Text").value.trim();
+ if(!t){info("まずセリフを入力してね！");return null;}
+ const u=new SpeechSynthesisUtterance(t);u.lang="ja-JP";
+ u.pitch=Number(byId(id+"Pitch").value);u.rate=Number(byId(id+"Rate").value);u.volume=1;
+ const n=Number(byId(id+"Voice").value);
+ if(Number.isInteger(n)&&n>=0&&voices[n])u.voice=voices[n];
+ return u;
+}
+function start(names){
+ if(!engine){info("このブラウザは音声に対応していません。Chromeで開いてね。");return;}
+ stop();const version=playVersion;let index=0;
+ function next(){
+  if(version!==playVersion)return;
+  if(index>=names.length){info("再生が終わりました！声の高さや速さを変えてみてね。");return;}
+  const id=names[index++];
+  const u=utteranceFor(id);if(!u)return;
+  const person=id==="boy"?"なんこうくん":"むげんチャッピー";
+  u.onend=()=>{if(version===playVersion)next();};
+  u.onerror=e=>{if(version===playVersion&&e.error!=="canceled"&&e.error!=="interrupted")info("音声を再生できませんでした。端末の音量・ブラウザを確認してね。");};
+  info(person+"が話しています…");
+  engine.speak(u);
+ }
+ next();
+}
+ids.forEach(id=>{
+ byId(id+"Play").addEventListener("click",()=>start([id]));
+ ["Pitch","Rate"].forEach(k=>{const input=byId(id+k),output=byId(id+k+"Value");input.addEventListener("input",()=>{output.textContent=Number(input.value).toFixed(2);});});
+});
+byId("bothPlay").addEventListener("click",()=>start(["boy","girl"]));
+byId("stopPlay").addEventListener("click",()=>{stop();info("停止しました。いつでも再生できるよ！");});
+byId("reset").addEventListener("click",()=>{
+ stop();
+ [["boyPitch",1.15],["boyRate",1],["girlPitch",1.4],["girlRate",1.1]].forEach(([id,val])=>{const el=byId(id);el.value=String(val);byId(id+"Value").textContent=val.toFixed(2);});
+ info("声の高さと速さを初期値に戻しました。");
+});
+document.addEventListener("visibilitychange",()=>{if(document.hidden)stop();});
+window.addEventListener("pagehide",stop);
+if(supported){loadVoices();if(engine.addEventListener)engine.addEventListener("voiceschanged",loadVoices);}
+else{["boyPlay","girlPlay","bothPlay"].forEach(id=>byId(id).disabled=true);info("このブラウザは音声合成非対応です。Chromeで開いてね。");}
+})();
+</script></body></html>
