@@ -253,6 +253,12 @@ h1 small{font-size:.6em;line-height:1.5}.lesson-question{font-size:clamp(22px,4.
 .draw-answer-formula-expression{font-size:clamp(29px,6.4vw,49px);line-height:1.6;font-weight:900;color:#b74500;white-space:nowrap}
 .draw-answer-formula-expression .fraction{font-size:.95em}
 @media(max-width:480px){.draw-answer-formula{padding:10px 6px}.draw-answer-formula-expression{font-size:clamp(26px,7vw,35px)}}
+/* 作図の途中でもグラフ用紙のすぐ上に式を表示 */
+.graph-paper-formula{width:min(680px,82%);margin:14px auto 5px;padding:10px 8px;border:3px solid #f18c16;border-radius:15px;background:#fffdf7;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px 16px;text-align:center}
+.graph-paper-formula-title{font-size:clamp(14px,3.2vw,20px);font-weight:900;color:#88400f}
+.graph-paper-formula-expression{font-size:clamp(27px,6vw,41px);font-weight:900;color:#bc4700;line-height:1.5;white-space:nowrap}
+.step-buttons button:disabled{opacity:.45;box-shadow:none;transform:none;cursor:not-allowed}
+@media(max-width:650px){.graph-paper-formula{width:min(82vw,520px);padding:8px 4px;gap:2px 10px}}
 </style></head>
 <body>
 
@@ -423,11 +429,14 @@ function drawGraph(c){
 
 }
 
-function drawGraphEquation(c){
+function drawGraphEquation(c, onPaper=false){
  if(c.kind!=="draw")return "";
- // グラフを書く6問の問題文には、それぞれの式が1行目にある。
+ // 作図する式は各問題文の1行目を使用し、問題と解答で同じ式を保つ。
  const equation=c.q.split("<br>")[0];
  const title=c.graphType==="inv"?"反比例の式":"比例の式";
+ if(onPaper){
+   return '<div class="graph-paper-formula" aria-label="グラフ用紙の上の'+title+'"><span class="graph-paper-formula-title">'+title+'</span><span class="graph-paper-formula-expression">'+equation+'</span></div>';
+ }
  return '<div class="draw-answer-formula" aria-label="'+title+'"><div class="draw-answer-formula-title">'+title+'</div><div class="draw-answer-formula-expression">'+equation+'</div></div>';
 }
 
@@ -438,8 +447,8 @@ async function render(){
  document.getElementById('side').textContent=showBack?'答え・考え方':'問題';
  const graph=showBack?c.backgraph:c.frontgraph;
  let text=showBack?drawGraphEquation(c)+'<div class="lesson-answer">'+c.answer+'</div><div class="lesson-steps">'+c.steps+'</div>':'<div class="lesson-question">'+c.q+'</div>';
- if(showBack&&c.interactive)text+='<div class="graph-instruction" id="graphInstruction"></div><div class="step-buttons"><button onclick="event.stopPropagation();advanceGraph()">タッチして次の手順 ▶</button><button onclick="event.stopPropagation();resetGraph()">最初から</button></div>';
- if(graph)text+='<div class="graph-wrap"><canvas id="graphCanvas"></canvas></div>';
+ if(showBack&&c.interactive)text+='<div class="graph-instruction" id="graphInstruction"></div><div class="step-buttons"><button id="graphBackBtn" onclick="event.stopPropagation();backGraph()">◀ ひとつもどる</button><button onclick="event.stopPropagation();advanceGraph()">タッチして次の手順 ▶</button><button onclick="event.stopPropagation();resetGraph()">最初から</button></div>';
+ if(graph)text+=(showBack&&c.kind==="draw"?drawGraphEquation(c,true):"")+'<div class="graph-wrap"><canvas id="graphCanvas"></canvas></div>';
  document.getElementById('content').innerHTML=text;
  if(graph)requestAnimationFrame(()=>drawGraph(c));
  if(showBack&&c.interactive)updateGraphInstruction();
@@ -458,8 +467,11 @@ function updateGraphInstruction(){
  if(c.graphType==='prop'&&graphStage<c.points.length)msg+=' 右に '+c.run+'、'+(c.rise>0?'上':'下')+'に '+Math.abs(c.rise)+' 移動しよう。';
  if(graphStage===c.points.length)msg+=' 次のタッチで'+(c.graphType==='prop'?'直線':'曲線')+'を引きます。';}
  el.textContent='手順 '+graphStage+' / '+total+'　'+msg;
+ const backButton=document.getElementById('graphBackBtn');
+ if(backButton)backButton.disabled=graphStage===0;
 }
 function advanceGraph(){const c=cards[index];if(!showBack||!c.interactive)return;graphStage=Math.min(graphStage+1,c.points.length+1);drawGraph(c);updateGraphInstruction();}
+function backGraph(){const c=cards[index];if(!showBack||!c.interactive)return;graphStage=Math.max(0,graphStage-1);drawGraph(c);updateGraphInstruction();}
 function resetGraph(){graphStage=0;drawGraph(cards[index]);updateGraphInstruction();}
 function handleCardTap(){const c=cards[index];if(showBack&&c.interactive)advanceGraph();else flipCard();}
 function flipCard(){showBack=!showBack;render();}
