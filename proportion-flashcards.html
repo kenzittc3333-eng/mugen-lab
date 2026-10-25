@@ -246,7 +246,14 @@ h1 small{font-size:.6em;line-height:1.5}.lesson-question{font-size:clamp(22px,4.
 </style><style>
 .fraction{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.15;margin:0 .12em;white-space:nowrap;font-variant-numeric:lining-nums}.numerator{display:block;border-bottom:1.8px solid currentColor;padding:0 .18em .12em}.denominator{display:block;padding:.12em .18em 0}.math-variable{font-family:"Times New Roman",serif;font-style:italic;font-weight:inherit}.lesson-question,.lesson-answer{line-height:1.9;overflow-wrap:normal;word-break:normal}.lesson-steps{line-height:2.1}.value-table{min-width:250px;max-width:100%;margin:8px auto 18px;table-layout:fixed}.value-table th,.value-table td{min-width:44px;text-align:center;line-height:1.6}.table-caption{font-size:17px;font-weight:700;margin-top:16px}.table-scroll{max-width:100%;overflow-x:auto}.lesson-question{font-size:clamp(21px,4.5vw,34px)}.lesson-answer{font-size:clamp(24px,5vw,38px)}
 @media(max-width:650px){.lesson-steps{font-size:17px}.value-table{font-size:20px}.value-table th,.value-table td{padding:8px 5px}.lesson-question{font-size:22px}.lesson-answer{font-size:25px}}
-</style><style>.graph-instruction{background:#fff0c8;border:2px solid #ff9d24;border-radius:16px;padding:15px;font-size:20px;font-weight:800;line-height:1.7;margin:18px 0}.step-buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.step-buttons button{font-size:16px;padding:12px}.hint{line-height:1.5}.card{padding-bottom:185px}</style><style>.summary-red{color:#d00000;font-size:clamp(25px,5vw,36px);font-weight:900;line-height:1.8;text-align:center;margin:14px 0 20px}.hero-mascot,.card-mascot{mix-blend-mode:multiply}.lesson-steps{overflow-wrap:break-word}</style></head>
+</style><style>.graph-instruction{background:#fff0c8;border:2px solid #ff9d24;border-radius:16px;padding:15px;font-size:20px;font-weight:800;line-height:1.7;margin:18px 0}.step-buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.step-buttons button{font-size:16px;padding:12px}.hint{line-height:1.5}.card{padding-bottom:185px}</style><style>.summary-red{color:#d00000;font-size:clamp(25px,5vw,36px);font-weight:900;line-height:1.8;text-align:center;margin:14px 0 20px}.hero-mascot,.card-mascot{mix-blend-mode:multiply}.lesson-steps{overflow-wrap:break-word}
+/* Graph-drawing answer: show the original equation alongside its plotted graph */
+.draw-answer-formula{width:min(95%,610px);margin:5px auto 14px;padding:14px 12px 12px;background:#fff9ed;border:2px solid #f5a04c;border-radius:18px;text-align:center}
+.draw-answer-formula-title{font-size:clamp(16px,3.5vw,23px);font-weight:900;color:#8b370a;margin-bottom:6px}
+.draw-answer-formula-expression{font-size:clamp(29px,6.4vw,49px);line-height:1.6;font-weight:900;color:#b74500;white-space:nowrap}
+.draw-answer-formula-expression .fraction{font-size:.95em}
+@media(max-width:480px){.draw-answer-formula{padding:10px 6px}.draw-answer-formula-expression{font-size:clamp(26px,7vw,35px)}}
+</style></head>
 <body>
 
 <header>
@@ -416,13 +423,21 @@ function drawGraph(c){
 
 }
 
+function drawGraphEquation(c){
+ if(c.kind!=="draw")return "";
+ // グラフを書く6問の問題文には、それぞれの式が1行目にある。
+ const equation=c.q.split("<br>")[0];
+ const title=c.graphType==="inv"?"反比例の式":"比例の式";
+ return '<div class="draw-answer-formula" aria-label="'+title+'"><div class="draw-answer-formula-title">'+title+'</div><div class="draw-answer-formula-expression">'+equation+'</div></div>';
+}
+
 async function render(){
  const c=cards[index];
  graphStage=0;
  document.getElementById('badge').textContent=c.group+' '+(index+1);
  document.getElementById('side').textContent=showBack?'答え・考え方':'問題';
  const graph=showBack?c.backgraph:c.frontgraph;
- let text=showBack?'<div class="lesson-answer">'+c.answer+'</div><div class="lesson-steps">'+c.steps+'</div>':'<div class="lesson-question">'+c.q+'</div>';
+ let text=showBack?drawGraphEquation(c)+'<div class="lesson-answer">'+c.answer+'</div><div class="lesson-steps">'+c.steps+'</div>':'<div class="lesson-question">'+c.q+'</div>';
  if(showBack&&c.interactive)text+='<div class="graph-instruction" id="graphInstruction"></div><div class="step-buttons"><button onclick="event.stopPropagation();advanceGraph()">タッチして次の手順 ▶</button><button onclick="event.stopPropagation();resetGraph()">最初から</button></div>';
  if(graph)text+='<div class="graph-wrap"><canvas id="graphCanvas"></canvas></div>';
  document.getElementById('content').innerHTML=text;
