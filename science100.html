@@ -25,7 +25,7 @@ h1{color:#ea671e;font-size:clamp(28px,7vw,48px);line-height:1.2;margin:9px 0 3px
 .nav{display:grid;grid-template-columns:1fr 1.35fr 1fr;gap:8px;margin-top:20px}.primary{border:0;border-radius:16px;background:linear-gradient(180deg,#ffa139,#ed6c24);color:white;min-height:55px;font-size:clamp(16px,3.7vw,20px);font-weight:1000;box-shadow:0 5px #b8521a;padding:10px 5px}.primary:active{transform:translateY(3px);box-shadow:0 2px #b8521a}
 .extra{margin-top:17px}.secondary{border:2px solid #f7c58f;border-radius:13px;background:white;color:#87461b;padding:10px 13px;font-weight:900;min-height:44px}.secondary.marked{border-color:#75bb82;background:#e7ffe9;color:#287a46}
 details{margin-top:22px;background:#fffaf3;border:2px solid #ffd0a0;border-radius:17px;padding:13px 15px}summary{cursor:pointer;color:#9a4c1c;font-weight:1000}details p{font-size:13px;line-height:1.6}.uploads{display:grid;grid-template-columns:1fr;gap:10px}.uploads label{background:white;border:1px solid #f4c291;border-radius:10px;padding:9px;font-size:13px;font-weight:900}.uploads input{display:block;width:100%;font-size:12px;margin-top:6px}
-.save{border:0;border-radius:12px;background:#26865a;color:white;font-weight:1000;padding:12px 16px;margin-top:12px}
+
 footer{margin-top:22px;text-align:center;color:#8f613e;font-size:12px;line-height:1.8}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#62371f;color:#fff;border-radius:24px;padding:11px 17px;font-weight:900;text-align:center;max-width:90%;z-index:5}
 @media(max-width:480px){.wrap{padding:9px 10px 26px}.uploads{grid-template-columns:1fr}.primary{font-size:16px}.flash{min-height:370px}}
 </style>
@@ -59,9 +59,8 @@ footer{margin-top:22px;text-align:center;color:#8f613e;font-size:12px;line-heigh
 <div class="extra"><button id="repeat" class="secondary">🔉 読み上げ</button><button id="mark" class="secondary">☆ 復習する</button><button id="restart" class="secondary">↺ 最初から</button></div>
 <details>
   <summary>🎨 なんこうくんの画像をカスタマイズ</summary>
-  <p>左側のなんこうくんは、お好みの画像に変更できます。右側のむげんチャッピーは固定です。「画像入りHTMLを保存」を押すと、選んだなんこうくんの画像を含むHTMLファイルを保存できます。</p>
+  <p>左側のなんこうくんは、お好みの画像に変更できます。右側のむげんチャッピーは固定です。</p>
   <div class="uploads"><label>なんこうくんの画像を選ぶ<input type="file" accept="image/*" id="nankoFile"></label></div>
-  <button id="export" class="save">↓ 画像入りHTMLを保存</button>
 </details>
 <footer><b>総合教育研究所　無限の可能性</b></footer>
 </main><div id="toast" class="toast" role="status" hidden></div>
@@ -194,7 +193,6 @@ $("mark").onclick=()=>{let q=current();if(!q)return;if(review.has(q.rank))review
 $("restart").onclick=()=>{index=0;showAnswer=false;render();if(current())speak(current().question)};
 function paint(kind){let img=$(kind+"Img");img.hidden=!images[kind];$(kind+"Blank").hidden=!!images[kind];if(images[kind])img.src=images[kind]}
 const kind="nanko";$(kind+"File").onchange=e=>{let f=e.target.files?.[0];if(!f)return;if(!f.type.startsWith("image/")||f.size>8*1024*1024){toast("8MB以下の画像を選んでください");return}let reader=new FileReader();reader.onload=()=>{images[kind]=String(reader.result);paint(kind);toast("なんこうくんの画像を変更しました")};reader.readAsDataURL(f)};paint("nanko");paint("chappy");
-$("export").onclick=()=>{let copy=document.documentElement.cloneNode(true);copy.querySelector("#mugenImages")?.remove();let script=copy.ownerDocument.createElement("script");script.id="mugenImages";script.textContent="window.MUGEN_IMAGES="+JSON.stringify(images).replace(/</g,"\\u003c")+";";copy.querySelector("#mainScript").before(script);let content="<!doctype html>\n"+copy.outerHTML;let url=URL.createObjectURL(new Blob([content],{type:"text/html;charset=utf-8"}));let a=document.createElement("a");a.href=url;a.download="高校入試_理科100問_画像入り.html";document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);toast("画像入りHTMLを保存しました")};
 setup(lastRank);
 </script>
 </body></html>
