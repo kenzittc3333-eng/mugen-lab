@@ -145,7 +145,14 @@ function appendMixed(target,text){
   }
   if(pos<text.length)target.append(document.createTextNode(text.slice(pos)));
 }
+function mugenFormatPositiveMonomialDivision(text){
+  // A ÷ (positive monomial B) is shown as a stacked fraction A/B.
+  // Do not remove brackets around negative values, sums, or differences.
+  return String(text).replace(/([0-9]+[a-zA-Z²³]*)÷\(([1-9][0-9]*[a-zA-Z²³]+)\)/g,
+    (match,numerator,denominator)=>numerator+'/'+denominator);
+}
 function displayMath(target,text){
+  text=mugenFormatPositiveMonomialDivision(text);
   target.replaceChildren();
   const re=/\{\s*([^{}，,、]+)\s*[，,、]\s*([^{}]+)\s*\}/g;
   let pos=0;
