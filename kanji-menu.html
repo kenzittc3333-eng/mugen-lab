@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>漢検読み100問｜MUGEN学習LAB</title>
+<style>
+:root{--o:#f28c18;--d:#7b4318;--c:#fffaf2}*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",Meiryo,sans-serif;background:linear-gradient(#fffaf2,#fff);color:var(--d)}
+header{background:#fff;border-bottom:5px solid var(--o);padding:12px}.brand{max-width:900px;margin:auto;display:flex;align-items:center;gap:12px}.brand img{width:117px;height:117px;object-fit:contain}.brand .brand-title{flex:1;min-width:0}.brand img.chappy{width:129px;height:156px;flex-shrink:0}.brand b{font-size:clamp(19px,3.2vw,27px)}.brand h1{margin:2px 0;color:#c96300;font-size:clamp(30px,7.5vw,55px)}
+main{max-width:900px;margin:auto;padding:25px 15px 45px}.hero{text-align:center}.hero h2{font-size:clamp(34px,8vw,56px);color:#c96300;margin:5px}.hero p{font-size:clamp(18px,4vw,25px);font-weight:800;line-height:1.7}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px;margin-top:25px}.card{min-height:125px;border:3px solid #f3b15d;border-radius:23px;background:white;text-decoration:none;color:var(--d);display:flex;align-items:center;justify-content:center;text-align:center;font-weight:900;font-size:clamp(19px,4.5vw,28px);box-shadow:0 7px 0 #f5d6ac}.card:first-child{background:var(--o);color:#fff;border-color:var(--o);box-shadow:0 7px 0 #c86a00}.icon{display:block;font-size:38px;margin-bottom:6px}
+.note{text-align:center;margin-top:30px;background:#fff2dd;padding:15px;border-radius:18px;font-weight:700}footer{text-align:center;padding:20px;font-weight:900}
+@media(max-width:520px){.brand img{width:96px;height:96px}.brand b{font-size:17px}.brand{gap:8px}.brand h1{font-size:clamp(22px,6vw,48px)}.brand img.chappy{width:96px;height:123px}.grid{gap:10px}.card{min-height:112px}}
+.portal{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:26px 0}.portal a{display:block;text-align:center;text-decoration:none;background:#fff;border:2px solid #ee9b40;border-radius:18px;padding:18px 9px;color:#8a4400;font-weight:900}.portal a:first-child{background:#e8750b;color:white}.mission{background:#fff2dd;border-radius:24px;padding:24px 18px;text-align:center;margin:26px 0}.mission h2{color:#b85800}.mission p{line-height:2;font-weight:700}.rainbow{background:linear-gradient(90deg,#e65c16,#e3a000,#1c9d61,#168ac5,#9d50b8);background-clip:text;-webkit-background-clip:text;color:transparent}.info{background:#fff;border:2px solid #f3c28c;border-radius:18px;padding:20px;margin:20px 0;line-height:1.9}.info h3{color:#b85800}@media(max-width:620px){.portal{grid-template-columns:1fr}}
+/* Centered, friendly responsive typography */
+.brand{justify-content:center;text-align:center}
+.brand .brand-title{text-align:center}
+.brand b,.brand h1{display:block;text-align:center}
+.hero h2{font-family:"Hiragino Maru Gothic ProN","HG丸ｺﾞｼｯｸM-PRO","Yu Gothic",Meiryo,sans-serif;font-weight:800;letter-spacing:.015em;font-size:clamp(23px,5.7vw,47px);white-space:nowrap;text-align:center}
+.hero,.mission,.info,.note,footer{text-align:center}
+.mission h2{font-size:clamp(20px,4.8vw,32px);line-height:1.6}
+.mission h2 span{white-space:nowrap}
+.portal a{display:flex;align-items:center;justify-content:center;line-height:1.5;overflow-wrap:normal;word-break:keep-all;text-align:center}
+.grid .card{text-align:center;word-break:keep-all}
+.info h3{font-size:clamp(18px,4.3vw,26px);line-height:1.6}
+@media(max-width:520px){
+.brand{gap:5px}
+.brand img{width:72px;height:87px}
+.brand img.chappy{width:72px;height:99px}
+.brand b{font-size:clamp(12px,3.1vw,17px);white-space:nowrap}
+.brand h1{font-size:clamp(19px,5vw,27px);white-space:nowrap}
+.hero h2{font-size:clamp(22px,5.5vw,32px)}
+.portal a{min-height:54px}
+}
+.math-script{font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-style:italic;font-size:46px;font-weight:500;line-height:1.2}.signs{font-family:Arial,sans-serif;font-size:44px;line-height:1.2}.signs span:first-child{color:#3579bb}.signs span:last-child{color:#e26647;margin-left:5px}.english-photo{line-height:0}.english-photo img{width:98px;height:66px;object-fit:cover;object-position:50% 52%;border-radius:12px;box-shadow:0 2px 5px #b37b3d25}@media(max-width:520px){.english-photo img{width:92px;height:64px}}.root-mascot{line-height:0;margin-bottom:5px}.root-mascot img{display:block;width:100px;height:100px;object-fit:contain;margin:0 auto}a[href="square-root.html"]{padding:10px 4px}@media(max-width:520px){.root-mascot img{width:88px;height:88px}}
+/* 明るいオレンジ基調のトップページ（2026年10月） */
+:root{--o:#ff9f2f;--d:#694126;--c:#fff9ef}
+body{background:linear-gradient(#fff8e9,#fffdf7);color:var(--d)}
+header{background:#fffdfa;border-bottom-color:#ffb05c}
+.brand h1.rainbow,.rainbow{background:linear-gradient(90deg,#e84c40 0%,#f6a21d 20%,#d8b323 36%,#27a467 54%,#278ec8 73%,#9655b9 95%);background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.hero h2{color:#dd760b}
+.card{background:#fffdfa;border-color:#ffc77e;color:var(--d);box-shadow:0 7px 0 #f9dcb2}
+.card:first-child{background:linear-gradient(135deg,#ffd58e,#ffac44);border-color:#f69a26;color:#64370d;box-shadow:0 7px 0 #eaa75b}
+.note,.mission{background:#fff0d9}
+.portal a{background:#fffefc;border-color:#ffbf73;color:#824611}
+.portal a:first-child{background:#f89428;color:#ffffff}
+.mission h2,.info h3{color:#bc6417}
+.info{background:#fffefa;border-color:#ffd3a0}
+.english-photo img{box-shadow:0 2px 5px #b37b3d25}
+.brand img{flex-shrink:0}
+.function-photo{line-height:0;margin-bottom:6px}
+.function-photo img{display:block;width:86px;height:86px;object-fit:contain;margin:0 auto}
+@media(max-width:520px){.brand{gap:4px}.brand b{font-size:clamp(11px,3.1vw,17px)}.brand h1{font-size:clamp(18px,5vw,27px)}.function-photo img{width:76px;height:76px}}
+</style></head><body><main><a href="index.html" style="color:#7b4318;font-weight:bold">← MUGEN学習LABに戻る</a><div class="hero"><p class="rainbow">総合教育研究所　無限の可能性</p><h2>漢検読み100問</h2><p>学びたい級を選んでね</p><div style="display:flex;justify-content:center;align-items:center;gap:30px"><img src="kanji-nanko.webp" alt="なんこうくん" width="120"><img src="kanji-chappy.webp" alt="むげんチャッピー" width="120"></div></div><div class="grid"><a class="card" href="kanji-grade1.html"><div><span class="icon">📖</span>漢検1級<br><small>読み100問</small></div></a><a class="card" href="kanji-grade2.html"><div><span class="icon">📖</span>漢検2級<br><small>読み100問</small></div></a><a class="card" href="kanji-grade3.html"><div><span class="icon">📖</span>漢検3級<br><small>読み100問</small></div></a><a class="card" href="kanji-grade4.html"><div><span class="icon">📖</span>漢検4級<br><small>読み100問</small></div></a><a class="card" href="kanji-grade5.html"><div><span class="icon">📖</span>漢検5級<br><small>読み100問</small></div></a></div><div class="note">タップで答えを表示 ／ シャッフル・復習マーク付き</div></main><footer>総合教育研究所　無限の可能性</footer></body></html>
