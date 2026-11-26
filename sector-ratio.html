@@ -45,6 +45,15 @@ nav{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0 0}
 nav button{background:#ffdaae;color:#632806;border:2px solid #b94b0d;padding-inline:4px}
 button:disabled{opacity:.48;cursor:default}
 .hint{text-align:center;font-size:.8rem;color:#70401c;margin:8px 0 0}
+
+.answer-grid{grid-template-columns:1fr;gap:16px}
+.answer-grid>figure{width:100%}
+.answer-grid svg{max-width:340px}
+.answer-grid figcaption{font-size:1rem;font-weight:750;margin-top:8px}
+.working{font-size:1rem}
+.explanation{text-align:left;background:#fffaf0;border:2px solid #f2b571;border-radius:16px;margin-top:16px;padding:12px 14px;line-height:1.8}
+.explanation p{margin:6px 0}
+.explanation strong{color:#a63123}
 </style>
 </head>
 <body>
@@ -79,11 +88,12 @@ button:disabled{opacity:.48;cursor:default}
           <path id="divisions" fill="none" stroke="#85411a" stroke-width="1.6"/>
           <circle cx="105" cy="105" r="90" fill="none" stroke="#85411a" stroke-width="2"/>
           <circle cx="105" cy="105" r="3" fill="#592e18"/>
-          <text id="chart-angle" text-anchor="middle" dominant-baseline="central" fill="#482910" font-weight="850" font-size="16" stroke="#f58c32" stroke-width="2" paint-order="stroke"></text>
+          <g id="piece-labels"></g>
         </svg>
         <figcaption id="division-caption"></figcaption>
       </figure>
     </div>
+    <div class="explanation" id="explanation"></div>
   </div>
 </section>
 <nav aria-label="カード操作">
@@ -117,20 +127,29 @@ function reveal(show) {
     const numerator = angle/divisor;
     const denominator = 360/divisor;
     const [x,y] = point(angle,90);
-    const [labelX,labelY] = point(180/denominator,70);
+    const unitAngle = 360/denominator;
     get('fraction').innerHTML = fraction(numerator,denominator);
-    get('working').innerHTML = fraction(angle,360)+' を約分';
+    get('working').innerHTML = fraction(angle,360)+' ＝ '+fraction(numerator,denominator);
     get('sector').setAttribute('d',`M105 105 L105 15 A90 90 0 ${angle>180 ? 1 : 0} 1 ${x} ${y} Z`);
     const rays = Array.from({length:denominator-1},(_,i)=>{
       const [rayX,rayY] = point((i+1)*360/denominator,90);
       return `M105 105 L${rayX} ${rayY}`;
     });
     get('divisions').setAttribute('d',rays.join(' '));
-    get('division-caption').textContent = `${denominator}等分のうち${numerator}区画が色付き`;
-    get('chart-title').textContent = `円全体のうち中心角${angle}度のおうぎ形`;
-    get('chart-angle').setAttribute('x',labelX);
-    get('chart-angle').setAttribute('y',labelY);
-    get('chart-angle').textContent = angle+'°';
+
+    get('piece-labels').innerHTML = Array.from({length:numerator},(_,i)=>{
+      const [lx,ly] = point((i+0.5)*unitAngle,68);
+      return `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="central" fill="#482910" font-weight="850" font-size="11" stroke="#fff4dd" stroke-width="2.5" paint-order="stroke">${unitAngle}°</text>`;
+    }).join('');
+    get('division-caption').textContent = `${unitAngle}°のおうぎ形が${numerator}つで、合計${angle}°。円全体は${denominator}等分。`;
+    get('chart-title').textContent = `円を${denominator}等分した図。1つ分は${unitAngle}度。色のついた${numerator}つ分を合わせると${angle}度。`;
+    get('explanation').innerHTML =
+      `<p>① 円全体の中心角は <strong>360°</strong> です。</p>
+      <p>② 360° ÷ ${denominator} ＝ <strong>${unitAngle}°</strong><br>円を${denominator}等分すると、1つ分は${unitAngle}°です。</p>
+      <p>③ ${angle}° ÷ ${unitAngle}° ＝ <strong>${numerator}</strong><br>${angle}°は、この小さなおうぎ形の<strong>${numerator}つ分</strong>です。</p>
+      <p>だから、<strong>${denominator}等分したうちの${numerator}つ分</strong>で、円全体の ${fraction(numerator,denominator)} になります。</p>
+      <p>計算でも確認：${fraction(angle,360)}${divisor>1 ? ` ＝ ${fraction(angle+' ÷ '+divisor,360+' ÷ '+divisor)}` : ''} ＝ ${fraction(numerator,denominator)}</p>`;
+
   }
   get('answer').hidden = !show;
   get('toggle').textContent = show ? '答えと図を隠す' : '答えと図を見る';
